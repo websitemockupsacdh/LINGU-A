@@ -642,8 +642,8 @@ function App() {
             onClick={() => scrollToSection('home')}
             aria-label="Go to home section"
           >
-            <span className="brand-mark">L</span>
-            <span className="brand-text">LINGUÉA</span>
+            <span className="brand-mark">I</span>
+            <span className="brand-text">ILTC</span>
           </button>
 
           <nav className="main-nav" aria-label="Primary navigation">
@@ -664,7 +664,7 @@ function App() {
 
           <div className="nav-actions">
             <button type="button" className="secondary-btn nav-secondary" onClick={() => scrollToSection('features')}>
-              EXPLORE LANGUAGES
+              EXPLORE PROGRAMS
             </button>
             <button type="button" className="primary-btn nav-primary" onClick={() => scrollToSection('booking')}>
               BOOK A SERVICE
@@ -718,18 +718,18 @@ function App() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7 }}
             >
-              <p className="eyebrow">MULTILINGUAL LANGUAGE EDUCATION</p>
+              <p className="eyebrow">TOP 1 IELTS • REVIEW • LANGUAGE CENTER</p>
               <h1>
-                Learn. Connect.<br />
-                Go Further.
+                I Learn<br />
+                Language Tutorial Center
               </h1>
               <p className="subtitle">
-                Structured language learning designed to build practical communication, cultural understanding, and long-term confidence.
+                From IELTS and UKVI preparation to language learning, we help students build confidence, improve performance, and reach their academic and career goals.
               </p>
 
               <div className="teacher-badge">
-                <div className="teacher-badge__label">LINGUÉA</div>
-                <div className="teacher-badge__title">Learn. Connect. Go Further.</div>
+                <div className="teacher-badge__label">ILTC</div>
+                <div className="teacher-badge__title">I Learn Language Tutorial Center</div>
               </div>
 
               <div className="hero-actions">
@@ -737,14 +737,14 @@ function App() {
                   BOOK A SERVICE <ArrowRight size={18} />
                 </button>
                 <button type="button" className="secondary-btn" onClick={() => scrollToSection('features')}>
-                  EXPLORE LANGUAGES
+                  EXPLORE COURSES
                 </button>
               </div>
 
-              <div className="language-ticker" aria-label="Languages offered">
+              <div className="language-ticker" aria-label="Languages and programs offered">
                 <div className="ticker-track">
                   {[...Array(2)].flatMap(() => [
-                    '日本語', '•', '廣東話', '•', '中文', '•', 'ภาษาไทย', '•', 'Português', '•', 'Español',
+                    'IELTS', '•', 'UKVI', '•', 'OET', '•', 'PTE', '•', 'LET', '•', 'English', '•', 'Japanese', '•', 'Mandarin', '•', 'German', '•', 'Spanish',
                   ])}
                 </div>
               </div>
@@ -752,24 +752,24 @@ function App() {
               <div className="hero-summary" aria-label="Program overview">
                 <div className="glass-card summary-card summary-card__primary">
                   <div className="mini-stat">
-                    <span className="stat-number">6</span>
+                    <span className="stat-number">6+</span>
                     <span className="stat-text">LANGUAGES</span>
                   </div>
                   <div className="stat-row">
-                    <span>Multiple Learning Levels</span>
-                    <span>Structured Lessons</span>
+                    <span>IELTS and exam review</span>
+                    <span>English, Japanese, Mandarin, German, Spanish</span>
                   </div>
                 </div>
 
                 <div className="glass-card summary-card summary-card__secondary">
                   <div className="panel-header">
-                    <span className="panel-label">Learning flow</span>
+                    <span className="panel-label">Focus</span>
                     <span className="panel-dot" />
                   </div>
                   <ul>
-                    <li>Personalized instruction</li>
-                    <li>Practical communication</li>
-                    <li>Long-term progression</li>
+                    <li>Exam preparation and review</li>
+                    <li>Speaking, writing, and listening support</li>
+                    <li>Language learning for daily life and goals</li>
                   </ul>
                 </div>
               </div>
@@ -1019,26 +1019,29 @@ function App() {
         <section id="about" className="section-block about-section">
           <div className="container about-grid">
             <motion.div className="about-copy" initial={{ opacity: 0, x: -24 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true, amount: 0.2 }}>
-              <p className="eyebrow">MEET YOUR LANGUAGE EDUCATOR</p>
-              <h2>Meet Your Language Educator</h2>
-              <div className="teacher-name">LINGUÉA</div>
-              <div className="teacher-role">Learn. Connect. Go Further.</div>
+              <p className="eyebrow">ABOUT ILTC</p>
+              <h2>Top 1 IELTS, Review, and Language Center</h2>
+              <div className="teacher-name">I Learn Language Tutorial Center</div>
+              <div className="teacher-role">ILTC • Lipa City, Batangas</div>
 
               <blockquote>
-                “Language is not simply a collection of words, rules, and sounds. It is a system through which people understand ideas, cultures, experiences, and one another.”
+                “We provide high-quality guidance in language learning and exam review so students can gain confidence, sharpen skill, and reach their goals with clarity.”
               </blockquote>
 
               <p>
-                Yuan CY approaches language education through structured, learner-centered instruction designed to connect curiosity with practical communication.
+                ILTC offers dependable support for IELTS, UKVI, Lifeskills, OET, PTE, LET, Civil Service, NMAT, Criminology, College Entrance Test, NLE, and other major tests.
               </p>
               <p>
-                Every lesson is built around understanding the learner’s current knowledge, identifying meaningful learning targets, and creating a pathway toward future capability.
+                We also provide tutorials in English, Japanese, Mandarin, German, Spanish, and other languages to support learners who want practical language skills in study, work, and daily life.
               </p>
 
               <div className="contact-block">
                 <h3>Contact</h3>
-                <a href="mailto:cyyuan09@gmail.com">cyyuan09@gmail.com</a>
-                <span>Flexible online and in-person learning options</span>
+                <a href="mailto:ilearnlanguagetutorialcenter@gmail.com">ilearnlanguagetutorialcenter@gmail.com</a>
+                <a href="tel:+639611244639">+63 961 124 4639</a>
+                <a href="https://www.facebook.com/share/1Ds1EKk1pF/?mibextid=wwXIfr" target="_blank" rel="noreferrer">Media Kit</a>
+                <a href="https://www.tiktok.com/@iltcmainaccountoffice?_r=1&_t=zs-99nmbexddvw" target="_blank" rel="noreferrer">TikTok: @iltcmainaccountoffice</a>
+                <span>Lipa City, Batangas (4226)</span>
               </div>
             </motion.div>
 
@@ -1167,11 +1170,11 @@ function App() {
         <div className="container footer-grid">
           <div>
             <div className="brand-badge footer-brand">
-              <span className="brand-mark">L</span>
-              <span className="brand-text">LINGUÉA</span>
+              <span className="brand-mark">I</span>
+              <span className="brand-text">ILTC</span>
             </div>
-            <p className="footer-tagline">Learn. Connect. Go Further.</p>
-            <p className="footer-languages">Japanese • Cantonese • Mandarin • Thai • Portuguese • Spanish</p>
+            <p className="footer-tagline">Top 1 IELTS, Review, and Language Center.</p>
+            <p className="footer-languages">English • Japanese • Mandarin • German • Spanish • Other languages</p>
           </div>
 
           <div className="footer-links">
@@ -1185,13 +1188,17 @@ function App() {
 
           <div className="footer-contact">
             <h3>Contact</h3>
-            <a href="mailto:cyyuan09@gmail.com"><Mail size={16} /> cyyuan09@gmail.com</a>
-            <a href="tel:+0000000000"><Phone size={16} /> Contact by email</a>
-            <span className="footer-meta"><MonitorSmartphone size={16} /> Online, in-person, and flexible learning</span>
+            <a href="mailto:ilearnlanguagetutorialcenter@gmail.com"><Mail size={16} /> ilearnlanguagetutorialcenter@gmail.com</a>
+            <a href="tel:+639611244639"><Phone size={16} /> +63 961 124 4639</a>
+            <a href="https://wa.me/639611244639" target="_blank" rel="noreferrer"><MessageSquareText size={16} /> WhatsApp: +63 961 124 4639</a>
+            <a href="https://www.tiktok.com/@iltcmainaccountoffice?_r=1&_t=zs-99nmbexddvw" target="_blank" rel="noreferrer"><MessageSquareText size={16} /> TikTok: @iltcmainaccountoffice</a>
+            <span className="footer-meta"><MonitorSmartphone size={16} /> WeChat: I Learn-Language Tutorial Center</span>
+            <a href="https://www.facebook.com/share/1Ds1EKk1pF/?mibextid=wwXIfr" target="_blank" rel="noreferrer"><Building2 size={16} /> Media Kit</a>
+            <span className="footer-meta"><Building2 size={16} /> Lipa City, Batangas (4226)</span>
           </div>
         </div>
         <div className="container footer-bottom">
-          <span>© 2026 LINGUÉA. All rights reserved.</span>
+          <span>© 2026 I Learn Language Tutorial Center. All rights reserved.</span>
         </div>
       </footer>
 
