@@ -735,6 +735,8 @@ footer {
   overflow: hidden;
   min-height: 300px;
   padding: 1.5rem 1.35rem 1.3rem;
+  background: linear-gradient(135deg, rgba(9, 22, 49, 0.96), rgba(22, 42, 79, 0.96)) !important;
+  color: #ffffff;
 }
 
 .language-card::before {
@@ -763,15 +765,15 @@ footer {
   display: grid;
   place-items: center;
   border-radius: 14px;
-  background: rgba(29, 78, 216, 0.06);
-  border: 1px solid rgba(29, 78, 216, 0.12);
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.8);
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.14);
   font-size: 1.5rem;
   line-height: 1;
 }
 
 .language-kicker {
-  color: var(--primary-deep);
+  color: #ffffff;
   font-size: 0.76rem;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -781,7 +783,7 @@ footer {
   position: relative;
   z-index: 1;
   margin-top: 18px;
-  color: var(--primary);
+  color: #dfe9ff;
   font-size: 0.7rem;
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -793,13 +795,14 @@ footer {
   margin-top: 12px;
   font-size: clamp(1.7rem, 3vw, 2.3rem);
   font-family: 'Georgia', 'Times New Roman', serif;
-  color: var(--text);
+  color: #ffffff;
 }
 
 .language-card p {
   position: relative;
   z-index: 1;
   margin-top: 14px;
+  color: #edf3ff;
 }
 
 .language-levels,
@@ -824,9 +827,9 @@ footer {
   display: inline-flex;
   padding: 6px 10px;
   border-radius: 999px;
-  background: rgba(29, 78, 216, 0.06);
-  border: 1px solid rgba(29, 78, 216, 0.12);
-  color: var(--text);
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  color: #ffffff;
   font-size: 0.72rem;
 }
 
@@ -835,7 +838,7 @@ footer {
   z-index: 1;
   margin-top: 22px;
   padding: 0;
-  color: var(--primary-deep);
+  color: #ffffff;
   background: transparent;
   border: none;
   font-size: 0.78rem;
