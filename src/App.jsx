@@ -1,494 +1,133 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import {
   ArrowRight,
-  ArrowUpRight,
-  BookOpen,
-  BriefcaseBusiness,
-  Building2,
-  CheckCircle2,
+  AudioLines,
+  BookOpenText,
+  Check,
   ChevronRight,
   Clock3,
   Globe2,
-  GraduationCap,
   Languages,
-  Mail,
-  Menu,
-  MessageSquareText,
-  MonitorSmartphone,
-  Phone,
+  Mic,
+  Play,
+  ShieldCheck,
   Sparkles,
+  Star,
   Target,
-  Users,
-  X,
+  TrendingUp,
+  Zap,
 } from 'lucide-react'
 import './App.css'
 
 const navItems = [
-  { id: 'home', label: 'Home' },
   { id: 'features', label: 'Features' },
-  { id: 'services', label: 'Services' },
-  { id: 'about', label: 'About' },
-  { id: 'booking', label: 'Book a Service' },
+  { id: 'courses', label: 'Courses / Languages' },
+  { id: 'how-it-works', label: 'How It Works' },
+  { id: 'pricing', label: 'Pricing' },
+  { id: 'dashboard', label: 'Practice Dashboard' },
 ]
 
 const featureCards = [
   {
     icon: Target,
-    title: 'Structured Learning',
-    description:
-      'Lessons follow a clear progression based on language level and learning objectives.',
+    title: 'Interactive Vocabulary Modules',
+    description: 'Context-rich flashcards with audio, repetition loops, and rapid recall checks built for retention.',
   },
   {
-    icon: MessageSquareText,
-    title: 'Practical Communication',
-    description:
-      'Focus on useful language learners can apply beyond the classroom and into daily life.',
+    icon: Mic,
+    title: 'AI Pronunciation Coach',
+    description: 'Real-time speech scoring gives instant feedback on clarity, rhythm, and accent accuracy.',
   },
   {
-    icon: Globe2,
-    title: 'Cultural Context',
-    description:
-      'Language is taught together with cultural context and appropriate usage in real situations.',
+    icon: BookOpenText,
+    title: 'Immersive Conversation Practice',
+    description: 'Role-play with lifelike dialogue scenarios that adapt to your pronunciation and confidence level.',
   },
   {
-    icon: Users,
-    title: 'Personalized Progress',
-    description:
-      'Learning targets are adjusted according to learner needs, level, and goals.',
-  },
-  {
-    icon: Languages,
-    title: 'Multi-Level Instruction',
-    description:
-      'Support learners from beginner foundations through more advanced communication.',
-  },
-  {
-    icon: CheckCircle2,
-    title: 'Continuous Development',
-    description:
-      'Each lesson contributes to measurable, long-term progress and future fluency.',
+    icon: TrendingUp,
+    title: 'Gamified Progress Tracking',
+    description: 'Daily streaks, match scores, and achievement badges keep your language growth visible and motivating.',
   },
 ]
 
-const pillars = [
-  {
-    number: '01',
-    title: 'CURIOSITY',
-    text: 'Lessons begin by creating curiosity and giving learners a reason to engage.',
-  },
-  {
-    number: '02',
-    title: 'ASSESSMENT',
-    text: 'Identify current ability, gaps, strengths, and learning needs with clarity.',
-  },
-  {
-    number: '03',
-    title: 'PRIOR KNOWLEDGE',
-    text: 'Connect new concepts with what the learner already knows and can use.',
-  },
-  {
-    number: '04',
-    title: 'KNOWLEDGE TO FUTURE',
-    text: 'Turn today’s learning into tomorrow’s ability through practical progression.',
-  },
-  {
-    number: '05',
-    title: 'EFFECTIVE TEACHER',
-    text: 'Guide, adapt, and inspire through explanation, feedback, and support.',
-  },
-]
+const courseTabs = ['Spanish', 'French', 'Japanese', 'German', 'Mandarin', 'English']
 
-const languages = [
-  {
-    id: 'japanese',
-    name: 'Japanese',
-    nativeName: '日本語',
-    country: 'Japan',
-    flag: '🇯🇵',
-    region: 'Japan',
-    variants: ['Standard Japanese'],
-    description: 'Build a clear foundation in pronunciation, sentence structure, and practical communication.',
-    levels: ['Beginner', 'Elementary', 'Intermediate', 'Advanced'],
-    accent: 'linear-gradient(135deg, rgba(59,130,246,0.18), rgba(15,30,50,0.88))',
-  },
-  {
-    id: 'cantonese',
-    name: 'Cantonese',
-    nativeName: '廣東話',
-    country: 'Hong Kong',
-    flag: '🇭🇰',
-    region: 'Hong Kong',
-    variants: ['Hong Kong Cantonese'],
-    description: 'Develop tone awareness, everyday speaking, and natural conversational confidence.',
-    levels: ['Beginner', 'Elementary', 'Intermediate', 'Advanced'],
-    accent: 'linear-gradient(135deg, rgba(96,165,250,0.16), rgba(15,30,50,0.9))',
-  },
-  {
-    id: 'mandarin',
-    name: 'Mandarin',
-    nativeName: '普通話 / 中文',
-    country: 'China',
-    flag: '🇨🇳',
-    region: 'China',
-    variants: ['Standard Mandarin'],
-    description: 'Strengthen listening, pronunciation, and structured language growth across practical topics.',
-    levels: ['Beginner', 'Elementary', 'Intermediate', 'Advanced'],
-    accent: 'linear-gradient(135deg, rgba(59,130,246,0.2), rgba(15,30,50,0.9))',
-  },
-  {
-    id: 'thai',
-    name: 'Thai',
-    nativeName: 'ภาษาไทย',
-    country: 'Thailand',
-    flag: '🇹🇭',
-    region: 'Thailand',
-    variants: ['Standard Thai'],
-    description: 'Learn tonal accuracy, script basics, and useful communication patterns for daily life.',
-    levels: ['Beginner', 'Elementary', 'Intermediate', 'Advanced'],
-    accent: 'linear-gradient(135deg, rgba(34,211,238,0.14), rgba(15,30,50,0.9))',
-  },
-  {
-    id: 'portuguese',
-    name: 'Portuguese',
-    nativeName: 'Português',
-    country: 'Portugal',
-    flag: '🇵🇹',
-    region: 'Portugal',
-    variants: ['Brazilian Portuguese', 'European Portuguese'],
-    description: 'Focus on pronunciation, sentence formation, and practical interaction in varied contexts.',
-    levels: ['Beginner', 'Elementary', 'Intermediate', 'Advanced'],
-    accent: 'linear-gradient(135deg, rgba(147,197,253,0.16), rgba(15,30,50,0.9))',
-  },
-  {
-    id: 'spanish',
-    name: 'Spanish',
-    nativeName: 'Español',
-    country: 'Spain',
-    flag: '🇪🇸',
-    region: 'Spain',
-    variants: ['Latin American Spanish', 'European Spanish'],
-    description: 'Develop essential skills for communication, vocabulary growth, and practical confidence.',
-    levels: ['Beginner', 'Elementary', 'Intermediate', 'Advanced'],
-    accent: 'linear-gradient(135deg, rgba(59,130,246,0.16), rgba(15,30,50,0.9))',
-  },
-]
-
-const lessonTargetDatabase = {
-  japanese: {
-    beginner: [
-      'Understand basic Japanese pronunciation.',
-      'Read and write Hiragana.',
-      'Read and write Katakana.',
-      'Understand basic greetings.',
-      'Introduce yourself.',
-      'Ask and answer simple questions.',
-      'Use basic sentence patterns.',
-      'Understand basic particles.',
-      'Develop basic listening comprehension.',
-      'Construct simple everyday sentences.',
-    ],
-    elementary: [
-      'Expand everyday vocabulary.',
-      'Develop basic Kanji recognition.',
-      'Use common verb forms.',
-      'Understand past, present, and future expressions.',
-      'Describe people, places, and activities.',
-      'Handle basic conversations.',
-      'Improve listening comprehension.',
-      'Read short practical texts.',
-    ],
-    intermediate: [
-      'Use longer sentence structures with accuracy.',
-      'Understand more complex verb and adjective forms.',
-      'Handle everyday conversations with greater fluency.',
-      'Describe experiences and opinions more clearly.',
-      'Read intermediate-level texts and articles.',
-      'Improve listening comprehension for real-world contexts.',
-    ],
-    upperIntermediate: [
-      'Discuss ideas with greater clarity and nuance.',
-      'Use a wider range of grammar and expressions.',
-      'Handle spontaneous conversation more naturally.',
-      'Develop stronger reading comprehension across topics.',
-      'Write structured responses and short narratives.',
-    ],
-    advanced: [
-      'Communicate with precision and flexibility.',
-      'Engage in extended discussion on professional and academic topics.',
-      'Understand nuanced language use and register.',
-      'Read and interpret complex texts.',
-      'Refine pronunciation and expressive communication.',
-    ],
-  },
-  cantonese: {
-    beginner: [
-      'Understand Cantonese pronunciation.',
-      'Develop tone awareness.',
-      'Learn Jyutping fundamentals.',
-      'Use everyday greetings.',
-      'Introduce yourself.',
-      'Build practical vocabulary.',
-      'Form basic sentences.',
-      'Understand common conversational expressions.',
-    ],
-    elementary: [
-      'Use more everyday phrases in conversation.',
-      'Expand topic-based vocabulary.',
-      'Handle simple social interactions.',
-      'Improve listening comprehension for common speech patterns.',
-      'Develop sentence structures for daily needs.',
-    ],
-    intermediate: [
-      'Handle routine conversations with confidence.',
-      'Understand spoken Cantonese in common settings.',
-      'Use more varied vocabulary and expressions.',
-      'Discuss familiar topics in greater detail.',
-    ],
-    upperIntermediate: [
-      'Respond naturally in more open-ended conversations.',
-      'Engage with nuanced social language.',
-      'Understand and participate in practical discussion.',
-      'Improve listening and speaking fluency across settings.',
-    ],
-    advanced: [
-      'Participate in complex discussion and professional dialogue.',
-      'Understand cultural nuance and idiomatic language.',
-      'Speak flexibly across formal and informal contexts.',
-      'Refine accuracy, flow, and expression.',
-    ],
-  },
-  mandarin: {
-    beginner: [
-      'Understand Pinyin.',
-      'Develop accurate pronunciation.',
-      'Learn the four tones.',
-      'Introduce yourself.',
-      'Use basic sentence structures.',
-      'Ask and answer everyday questions.',
-      'Build foundational vocabulary.',
-      'Understand basic measure words.',
-      'Develop listening comprehension.',
-    ],
-    elementary: [
-      'Expand everyday vocabulary in context.',
-      'Use common sentence patterns confidently.',
-      'Describe daily routines and familiar topics.',
-      'Develop stronger listening for conversation.',
-      'Read and write basic Chinese characters.',
-    ],
-    intermediate: [
-      'Discuss routine life and interests in more detail.',
-      'Use a wider range of grammar and structures.',
-      'Understand longer spoken passages.',
-      'Improve reading speed and comprehension.',
-    ],
-    upperIntermediate: [
-      'Speak more fluently on familiar and abstract topics.',
-      'Use varied expressions and longer discourse.',
-      'Read more complex texts and summaries.',
-      'Handle structured discussion with flexibility.',
-    ],
-    advanced: [
-      'Communicate with precision in academic and professional contexts.',
-      'Understand nuanced ideas and formal expressions.',
-      'Read complex materials and discuss them confidently.',
-      'Refine accuracy and rhetorical flexibility.',
-    ],
-  },
-  thai: {
-    beginner: [
-      'Learn Thai pronunciation.',
-      'Understand tonal distinctions.',
-      'Learn basic Thai script.',
-      'Read simple words.',
-      'Use everyday greetings.',
-      'Introduce yourself.',
-      'Build basic vocabulary.',
-      'Form simple sentences.',
-    ],
-    elementary: [
-      'Expand vocabulary for daily life.',
-      'Practice basic script recognition and reading.',
-      'Use sentence patterns in conversation.',
-      'Understand and respond to everyday questions.',
-    ],
-    intermediate: [
-      'Discuss familiar topics with more ease.',
-      'Use a wider range of expressions and structures.',
-      'Handle more natural conversation flow.',
-      'Improve listening and speaking accuracy.',
-    ],
-    upperIntermediate: [
-      'Participate in more natural social interaction.',
-      'Use slightly more complex grammar and vocabulary.',
-      'Describe experiences and opinions more clearly.',
-      'Develop stronger pragmatic communication.',
-    ],
-    advanced: [
-      'Engage in nuanced discussion across contexts.',
-      'Use formal and informal registers appropriately.',
-      'Read and understand more complex texts.',
-      'Communicate with confidence and precision.',
-    ],
-  },
-  portuguese: {
-    beginner: [
-      'Develop pronunciation fundamentals.',
-      'Introduce yourself.',
-      'Build everyday vocabulary.',
-      'Form basic sentences.',
-      'Ask and answer common questions.',
-      'Understand basic verb structures.',
-      'Handle simple everyday interactions.',
-    ],
-    elementary: [
-      'Expand practical vocabulary.',
-      'Use present and past structures more confidently.',
-      'Talk about routines and personal experiences.',
-      'Strengthen listening for common exchanged dialogue.',
-    ],
-    intermediate: [
-      'Speak with more confidence in routine situations.',
-      'Understand common texts and spoken interactions.',
-      'Use connection words and more complex sentence patterns.',
-      'Describe ideas and opinions more clearly.',
-    ],
-    upperIntermediate: [
-      'Discuss a wider range of topics with greater accuracy.',
-      'Use more nuanced language structures.',
-      'Participate in sustained conversation.',
-      'Read and respond effectively to practical texts.',
-    ],
-    advanced: [
-      'Communicate with flexibility in business and social contexts.',
-      'Handle nuanced discussion and sophisticated expression.',
-      'Read complex texts with confidence.',
-      'Refine interaction, register, and clarity.',
-    ],
-  },
-  spanish: {
-    beginner: [
-      'Develop pronunciation fundamentals.',
-      'Introduce yourself.',
-      'Build foundational vocabulary.',
-      'Understand gender and articles.',
-      'Form basic sentences.',
-      'Use common verbs.',
-      'Ask and answer everyday questions.',
-      'Handle simple conversations.',
-    ],
-    elementary: [
-      'Expand vocabulary for daily situations.',
-      'Use present tense patterns more accurately.',
-      'Describe everyday routines and preferences.',
-      'Build confidence in simple interaction.',
-    ],
-    intermediate: [
-      'Discuss familiar topics in more detail.',
-      'Use broader grammar structures accurately.',
-      'Handle practical listening and speaking tasks.',
-      'Read short texts and respond appropriately.',
-    ],
-    upperIntermediate: [
-      'Speak more naturally in extended conversation.',
-      'Handle varied topics and opinions with clarity.',
-      'Understand more complex spoken language.',
-      'Write structured responses and narratives.',
-    ],
-    advanced: [
-      'Command nuanced grammar and expression.',
-      'Engage in advanced discussion across contexts.',
-      'Read and assess more complex material.',
-      'Communicate with strong fluency and adaptability.',
-    ],
-  },
+const courseCatalog = {
+  Spanish: [
+    { level: 'Beginner A1–A2', lessons: '24 lessons', duration: '4 weeks', accent: 'purple', detail: 'Travel phrases and everyday confidence' },
+    { level: 'Intermediate B1–B2', lessons: '32 lessons', duration: '6 weeks', accent: 'cyan', detail: 'Conversation flow and grammar depth' },
+    { level: 'Advanced C1', lessons: '18 lessons', duration: '4 weeks', accent: 'mint', detail: 'Nuanced expression and workplace fluency' },
+  ],
+  French: [
+    { level: 'Beginner A1–A2', lessons: '22 lessons', duration: '4 weeks', accent: 'purple', detail: 'Practical speaking starters' },
+    { level: 'Intermediate B1–B2', lessons: '30 lessons', duration: '6 weeks', accent: 'cyan', detail: 'Listening and real-world dialogue' },
+    { level: 'Advanced C1', lessons: '20 lessons', duration: '5 weeks', accent: 'mint', detail: 'Fluency for travel and business' },
+  ],
+  Japanese: [
+    { level: 'Beginner A1–A2', lessons: '26 lessons', duration: '5 weeks', accent: 'purple', detail: 'Hiragana, phrases, and confidence' },
+    { level: 'Intermediate B1–B2', lessons: '35 lessons', duration: '7 weeks', accent: 'cyan', detail: 'Natural speech patterns and nuance' },
+    { level: 'Advanced C1', lessons: '22 lessons', duration: '5 weeks', accent: 'mint', detail: 'Presentation polish and cultural fluency' },
+  ],
+  German: [
+    { level: 'Beginner A1–A2', lessons: '23 lessons', duration: '4 weeks', accent: 'purple', detail: 'Core words and sentence building' },
+    { level: 'Intermediate B1–B2', lessons: '29 lessons', duration: '6 weeks', accent: 'cyan', detail: 'Grammar with practical speaking' },
+    { level: 'Advanced C1', lessons: '19 lessons', duration: '4 weeks', accent: 'mint', detail: 'Professional and academic confidence' },
+  ],
+  Mandarin: [
+    { level: 'Beginner A1–A2', lessons: '28 lessons', duration: '5 weeks', accent: 'purple', detail: 'Pinyin, tones, and everyday phrases' },
+    { level: 'Intermediate B1–B2', lessons: '33 lessons', duration: '6 weeks', accent: 'cyan', detail: 'Fluid conversations and listening practice' },
+    { level: 'Advanced C1', lessons: '21 lessons', duration: '5 weeks', accent: 'mint', detail: 'Complex discussion and presentation skills' },
+  ],
+  English: [
+    { level: 'Beginner A1–A2', lessons: '18 lessons', duration: '3 weeks', accent: 'purple', detail: 'Conversation, grammar, and confidence' },
+    { level: 'Intermediate B1–B2', lessons: '25 lessons', duration: '5 weeks', accent: 'cyan', detail: 'Business communication and speaking fluency' },
+    { level: 'Advanced C1', lessons: '17 lessons', duration: '4 weeks', accent: 'mint', detail: 'High-impact writing and public speaking' },
+  ],
 }
 
-const services = [
-  {
-    icon: BookOpen,
-    title: 'Private Language Lessons',
-    description: 'One-on-one instruction tailored to the learner’s objectives and pace.',
-  },
-  {
-    icon: GraduationCap,
-    title: 'Structured Language Programs',
-    description: 'Multi-session learning programs designed around specific proficiency goals.',
-  },
-  {
-    icon: MessageSquareText,
-    title: 'Conversational Practice',
-    description: 'Practical speaking sessions focused on confidence and real-world communication.',
-  },
-  {
-    icon: Sparkles,
-    title: 'Academic / JLPT Preparation',
-    description: 'Structured preparation for language examinations where applicable.',
-  },
-  {
-    icon: BriefcaseBusiness,
-    title: 'Business & Professional Language',
-    description: 'Language development for workplace communication and professional confidence.',
-  },
-  {
-    icon: Building2,
-    title: 'Customized Learning Programs',
-    description: 'Lessons designed around personal, academic, travel, or professional objectives.',
-  },
+const steps = [
+  'Choose your target language and starting level based on how you want to speak, write, and learn.',
+  'Practice for 10 minutes a day with micro lessons that mix listening, speaking, reading, and writing.',
+  'Track real-world fluency growth through timed quizzes, speech reviews, and milestone badges.',
 ]
 
-const languageMatrix = [
-  { label: 'Japanese', levels: { beginner: true, elementary: true, intermediate: true, advanced: true } },
-  { label: 'Cantonese', levels: { beginner: true, elementary: true, intermediate: true, advanced: true } },
-  { label: 'Mandarin', levels: { beginner: true, elementary: true, intermediate: true, advanced: true } },
-  { label: 'Thai', levels: { beginner: true, elementary: true, intermediate: true, advanced: true } },
-  { label: 'Portuguese', levels: { beginner: true, elementary: true, intermediate: true, advanced: true } },
-  { label: 'Spanish', levels: { beginner: true, elementary: true, intermediate: true, advanced: true } },
+const testimonials = [
+  { name: 'Maya R.', role: 'Spanish • reached B1 in 3 months', quote: 'The pronunciation coach made me feel confident speaking on day one. I finally stopped avoiding real conversations.', score: '4.9/5' },
+  { name: 'Ethan K.', role: 'French • daily streak 120 days', quote: 'The lessons feel bite-sized but powerful. I keep learning even on busy weeks because the structure is so clear.', score: '4.8/5' },
+  { name: 'Nadia L.', role: 'Japanese • advanced track', quote: 'The AI feedback catches tiny pronunciation issues instantly, and the cultural prompts make the language feel alive.', score: '5.0/5' },
 ]
 
-const levelNames = {
-  beginner: 'Beginner',
-  elementary: 'Elementary',
-  intermediate: 'Intermediate',
-  upperIntermediate: 'Upper-Intermediate',
-  advanced: 'Advanced',
-}
+const pricingPlans = [
+  { name: 'Free', price: '$0', description: 'Core daily practice and vocabulary decks.', perks: ['Daily drills', '3 beginner modules', 'Basic streak tracking'], featured: false },
+  { name: 'Pro', price: '$19', description: 'Unlimited AI practice and personalized coaching.', perks: ['Everything in Free', 'AI speech scoring', 'Unlimited lesson access', 'Offline practice mode'], featured: true },
+  { name: 'Teams', price: '$39', description: 'Built for study groups and shared progress.', perks: ['Multi-user tracking', 'Group leaderboard', 'Shared vocabulary sets', 'Team progress dashboard'], featured: false },
+]
 
-const levelOrder = ['beginner', 'elementary', 'intermediate', 'upperIntermediate', 'advanced']
-
-const languageGoals = {
-  conversation: {
-    japanese: ['Hiragana & Katakana', 'Basic sentence patterns', 'Everyday vocabulary', 'Listening practice', 'Conversational drills'],
-    cantonese: ['Jyutping foundations', 'Tone awareness', 'Everyday greetings', 'Listening drills', 'Conversation patterns'],
-    mandarin: ['Pinyin fundamentals', 'Tone accuracy', 'Basic sentence patterns', 'Everyday phrases', 'Speaking practice'],
-    thai: ['Thai script basics', 'Tonal accuracy', 'Everyday greetings', 'Practical vocabulary', 'Speaking repetition'],
-    portuguese: ['Pronunciation basics', 'Everyday vocabulary', 'Simple sentence patterns', 'Conversation tasks', 'Listening practice'],
-    spanish: ['Pronunciation fundamentals', 'Gender and articles', 'Core verbs', 'Everyday questions', 'Speaking practice'],
+const practiceData = {
+  Spanish: {
+    prompt: '¿Puedes repetir la frase más natural para invitar a un amigo a cenar?',
+    options: ['¿Te gustaría cenar conmigo esta noche?', '¿Cómo está tu cena de noche?', '¿Comes conmigo esta noche?', '¿Tú vienes a cena?'],
+    correct: '¿Te gustaría cenar conmigo esta noche?',
+    tip: 'Natural invitations often use “te gustaría” when sounding polite and conversational.',
   },
-  travel: {
-    japanese: ['Travel phrases', 'Directions and locations', 'Ordering food', 'Public transport basics', 'Simple interaction prompts'],
-    cantonese: ['Travel phrases', 'Directions', 'Ordering food', 'Everyday survival phrases', 'Listening practice'],
-    mandarin: ['Travel vocabulary', 'Directions', 'Ordering essentials', 'Useful social phrases', 'Listening practice'],
-    thai: ['Transport phrases', 'Directional language', 'Food and market language', 'Daily survival phrases', 'Pronunciation review'],
-    portuguese: ['Travel phrases', 'Places and directions', 'Ordering food', 'Practical vocabulary', 'Conversation memory'],
-    spanish: ['Travel phrases', 'Directions', 'Shopping basics', 'Food vocabulary', 'Basic interaction'],
+  French: {
+    prompt: 'Choisissez la réponse la plus naturelle pour proposer un café.',
+    options: ['Tu veux prendre un café ?', 'Tu as un café ?', 'Café toi aujourd’hui ?', 'Prends café ?'],
+    correct: 'Tu veux prendre un café ?',
+    tip: 'This phrase sounds natural and conversational in everyday French.',
   },
-  business: {
-    japanese: ['Professional introductions', 'Meeting language', 'Email etiquette', 'Presentation phrases', 'Politeness strategies'],
-    cantonese: ['Meeting basics', 'Professional greetings', 'Workplace phrases', 'Listening for context', 'Confidence building'],
-    mandarin: ['Professional introductions', 'Meeting vocabulary', 'Presentation starters', 'Workplace communication', 'Formal expressions'],
-    thai: ['Professional greetings', 'Workplace phrases', 'Meeting participation', 'Politeness structures', 'Listening tasks'],
-    portuguese: ['Professional introductions', 'Workplace vocabulary', 'Presenting information', 'Meeting language', 'Confidence routine'],
-    spanish: ['Professional introductions', 'Business vocabulary', 'Presentation language', 'Meeting strategies', 'Practical speaking'],
+  Japanese: {
+    prompt: 'Choose the most natural way to suggest meeting up after class.',
+    options: ['授業後、カフェに行きませんか？', '授業後にカフェ？', '授業後、カフェに行く？', '授業後、カフェですか？'],
+    correct: '授業後、カフェに行きませんか？',
+    tip: 'This phrase is natural, polite, and commonly used in invitation contexts.',
   },
-  exam: {
-    japanese: ['JLPT-aligned grammar review', 'Reading comprehension', 'Listening patterns', 'Vocabulary control', 'Timed practice'],
-    cantonese: ['Listening drills', 'Practical vocabulary', 'Sentence rhythm', 'Reading checkpoints', 'Speaking review'],
-    mandarin: ['Pinyin control', 'Character recognition', 'Listening pattern review', 'Grammar checkpoints', 'Exam-style drills'],
-    thai: ['Script reading', 'Tone accuracy', 'Listening check', 'Writing patterns', 'Vocabulary review'],
-    portuguese: ['Grammar review', 'Listening patterns', 'Reading comprehension', 'Vocabulary control', 'Timed tasks'],
-    spanish: ['Grammar review', 'Listening patterns', 'Reading tasks', 'Speaking drills', 'Comprehension checks'],
+  German: {
+    prompt: 'Welche Antwort klingt am natürlichsten, um jemanden zum Abendessen einzuladen?',
+    options: ['Möchtest du heute Abend mit mir essen?', 'Essen du heute mit mir?', 'Willst du Abend essen?', 'Du kommst heute Abend Essen?'],
+    correct: 'Möchtest du heute Abend mit mir essen?',
+    tip: 'A polite invitation usually uses “möchtest du…” for a natural tone.',
   },
 }
 
@@ -497,165 +136,39 @@ const scrollToSection = (id) => {
 }
 
 function App() {
-  const [activeSection, setActiveSection] = useState('home')
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-  const [modalLanguage, setModalLanguage] = useState(null)
-  const [modalLevel, setModalLevel] = useState('beginner')
-  const [explorer, setExplorer] = useState({
-    language: 'japanese',
-    currentLevel: 'beginner',
-    targetLevel: 'elementary',
-    goal: 'conversation',
-  })
-  const [bookingForm, setBookingForm] = useState({
-    fullName: '',
-    email: '',
-    phone: '',
-    language: 'Japanese',
-    currentLevel: 'Beginner',
-    desiredLevel: 'Elementary',
-    goal: 'Conversation',
-    schedule: 'Flexible',
-    format: 'Online',
-    message: '',
-  })
-  const [formErrors, setFormErrors] = useState({})
-  const [submitSuccess, setSubmitSuccess] = useState(false)
+  const [activeLanguage, setActiveLanguage] = useState('Spanish')
+  const [activeTab, setActiveTab] = useState('Spanish')
+  const [flipped, setFlipped] = useState(false)
+  const [selectedAnswer, setSelectedAnswer] = useState(null)
+  const [showResult, setShowResult] = useState(false)
 
-  useEffect(() => {
-    const sectionElements = document.querySelectorAll('section[id], footer[id]')
+  const activeCourseSet = courseCatalog[activeTab]
+  const practice = practiceData[activeLanguage]
+  const isAnswerCorrect = selectedAnswer === practice.correct
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const visible = entries
-          .filter((entry) => entry.isIntersecting)
-          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0]
-
-        if (visible) {
-          setActiveSection(visible.target.id)
-        }
-      },
-      { rootMargin: '0px 0px -45% 0px', threshold: [0.15, 0.45, 0.7] },
-    )
-
-    sectionElements.forEach((section) => observer.observe(section))
-
-    return () => observer.disconnect()
-  }, [])
-
-  useEffect(() => {
-    const handleEscape = (event) => {
-      if (event.key === 'Escape') {
-        setModalLanguage(null)
-      }
-    }
-
-    window.addEventListener('keydown', handleEscape)
-    return () => window.removeEventListener('keydown', handleEscape)
-  }, [])
-
-  const modalLanguageData = languages.find((language) => language.id === modalLanguage) || languages[0]
-  const selectedLanguage = languages.find((language) => language.id === explorer.language) || languages[0]
-
-  const explorerRecommendations = useMemo(() => {
-    const goalSet = languageGoals[explorer.goal]?.[explorer.language] || ['Core vocabulary', 'Listening practice', 'Conversation drills']
-
-    return {
-      focus: goalSet,
-      progression: [
-        `${levelNames[explorer.currentLevel]} to ${levelNames[explorer.targetLevel]}`,
-        'Targeted speaking and listening practice',
-        'Progressive grammar and vocabulary control',
-      ],
-      activities: [
-        'Guided speaking drills',
-        'Short listening exercises',
-        'Focused vocabulary review',
-        'Goal-based practice tasks',
-      ],
-    }
-  }, [explorer])
-
-  const openLessonTargets = (languageId, level = 'beginner') => {
-    setModalLanguage(languageId)
-    setModalLevel(level)
-  }
-
-  const handleBookingChange = (event) => {
-    const { name, value } = event.target
-    setBookingForm((current) => ({ ...current, [name]: value }))
-    setFormErrors((current) => ({ ...current, [name]: '' }))
-  }
-
-  const validateBookingForm = () => {
-    const nextErrors = {}
-
-    if (!bookingForm.fullName.trim()) nextErrors.fullName = 'Please enter your full name.'
-    if (!bookingForm.email.trim()) {
-      nextErrors.email = 'Please enter your email address.'
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(bookingForm.email)) {
-      nextErrors.email = 'Please enter a valid email address.'
-    }
-    if (!bookingForm.phone.trim()) nextErrors.phone = 'Please enter a contact number.'
-    if (!bookingForm.language.trim()) nextErrors.language = 'Please select a language.'
-    if (!bookingForm.goal.trim()) nextErrors.goal = 'Please share a learning goal.'
-
-    setFormErrors(nextErrors)
-    return Object.keys(nextErrors).length === 0
-  }
-
-  const handleSubmit = (event) => {
-    event.preventDefault()
-
-    if (!validateBookingForm()) {
-      setSubmitSuccess(false)
-      return
-    }
-
-    setSubmitSuccess(true)
-    setFormErrors({})
-    setBookingForm({
-      fullName: '',
-      email: '',
-      phone: '',
-      language: 'Japanese',
-      currentLevel: 'Beginner',
-      desiredLevel: 'Elementary',
-      goal: 'Conversation',
-      schedule: 'Flexible',
-      format: 'Online',
-      message: '',
-    })
+  const handleLanguagePick = (language) => {
+    setActiveTab(language)
+    setActiveLanguage(language)
+    setSelectedAnswer(null)
+    setShowResult(false)
   }
 
   return (
-    <div className="site-shell">
-      <div className="bg-orb orb-one" aria-hidden="true" />
-      <div className="bg-orb orb-two" aria-hidden="true" />
-      <div className="bg-grid" aria-hidden="true" />
-
+    <div className="lingua-shell">
       <header className="topbar">
         <div className="container nav-wrap">
-          <button
-            type="button"
-            className="brand-badge"
-            onClick={() => scrollToSection('home')}
-            aria-label="Go to home section"
-          >
-            <span className="brand-mark">I</span>
-            <span className="brand-text">ILTC</span>
+          <button className="brand" type="button" onClick={() => scrollToSection('home')} aria-label="Go to home section">
+            <img src="/logo.jpg" alt="Lingu-A logo" className="brand-logo" />
+            <span className="brand-name">Lingu-A</span>
           </button>
 
-          <nav className="main-nav" aria-label="Primary navigation">
+          <nav className="main-nav" aria-label="Main navigation">
             {navItems.map((item) => (
               <button
                 key={item.id}
                 type="button"
-                className={activeSection === item.id ? 'nav-link active' : 'nav-link'}
-                onClick={() => {
-                  scrollToSection(item.id)
-                  setMobileMenuOpen(false)
-                }}
+                className="nav-link"
+                onClick={() => scrollToSection(item.id)}
               >
                 {item.label}
               </button>
@@ -663,50 +176,20 @@ function App() {
           </nav>
 
           <div className="nav-actions">
-            <button type="button" className="secondary-btn nav-secondary" onClick={() => scrollToSection('features')}>
-              EXPLORE PROGRAMS
-            </button>
-            <button type="button" className="primary-btn nav-primary" onClick={() => scrollToSection('booking')}>
-              BOOK A SERVICE
+            <label className="lang-select" aria-label="Select language">
+              <Languages size={16} />
+              <select value={activeLanguage} onChange={(event) => handleLanguagePick(event.target.value)}>
+                {courseTabs.map((language) => (
+                  <option key={language} value={language}>{language}</option>
+                ))}
+              </select>
+            </label>
+            <button type="button" className="btn btn-ghost">Log In</button>
+            <button type="button" className="btn btn-primary pulse" onClick={() => scrollToSection('pricing')}>
+              Start Learning Free
             </button>
           </div>
-
-          <button
-            type="button"
-            className="menu-button"
-            aria-label="Toggle menu"
-            aria-expanded={mobileMenuOpen}
-            onClick={() => setMobileMenuOpen((current) => !current)}
-          >
-            {mobileMenuOpen ? <X size={18} /> : <Menu size={18} />}
-          </button>
         </div>
-
-        <AnimatePresence>
-          {mobileMenuOpen && (
-            <motion.div
-              className="mobile-menu"
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: 'auto' }}
-              exit={{ opacity: 0, height: 0 }}
-              transition={{ duration: 0.25 }}
-            >
-              {navItems.map((item) => (
-                <button
-                  key={item.id}
-                  type="button"
-                  className={activeSection === item.id ? 'mobile-link active' : 'mobile-link'}
-                  onClick={() => {
-                    scrollToSection(item.id)
-                    setMobileMenuOpen(false)
-                  }}
-                >
-                  {item.label}
-                </button>
-              ))}
-            </motion.div>
-          )}
-        </AnimatePresence>
       </header>
 
       <main>
@@ -714,75 +197,92 @@ function App() {
           <div className="container hero-grid">
             <motion.div
               className="hero-copy"
-              initial={{ opacity: 0, y: 32 }}
+              initial={{ opacity: 0, y: 28 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7 }}
+              transition={{ duration: 0.6 }}
             >
-              <p className="eyebrow">TOP 1 IELTS • REVIEW • LANGUAGE CENTER</p>
-              <h1>
-                I Learn<br />
-                Language Tutorial Center
-              </h1>
+              <span className="eyebrow">AI-powered language learning</span>
+              <h1>Master Any Language Through Context & Real-World Practice</h1>
               <p className="subtitle">
-                From IELTS and UKVI preparation to language learning, we help students build confidence, improve performance, and reach their academic and career goals.
+                Interactive, bite-sized lessons designed to help you reach conversational fluency faster with AI-guided feedback and immersive practice.
               </p>
 
-              <div className="teacher-badge">
-                <div className="teacher-badge__label">ILTC</div>
-                <div className="teacher-badge__title">I Learn Language Tutorial Center</div>
-              </div>
-
               <div className="hero-actions">
-                <button type="button" className="primary-btn" onClick={() => scrollToSection('booking')}>
-                  BOOK A SERVICE <ArrowRight size={18} />
+                <button type="button" className="btn btn-primary pulse" onClick={() => scrollToSection('pricing')}>
+                  Get Started Free <ArrowRight size={18} />
                 </button>
-                <button type="button" className="secondary-btn" onClick={() => scrollToSection('features')}>
-                  EXPLORE COURSES
+                <button type="button" className="btn btn-secondary" onClick={() => scrollToSection('courses')}>
+                  Explore Courses
                 </button>
               </div>
 
-              <div className="language-ticker" aria-label="Languages and programs offered">
-                <div className="ticker-track">
-                  {[...Array(2)].flatMap(() => [
-                    'IELTS', '•', 'UKVI', '•', 'OET', '•', 'PTE', '•', 'LET', '•', 'English', '•', 'Japanese', '•', 'Mandarin', '•', 'German', '•', 'Spanish',
-                  ])}
+              <div className="proof-strip">
+                <div className="proof-pill">
+                  <Star size={16} fill="currentColor" />
+                  4.9/5 rating from 10,000+ learners
                 </div>
-              </div>
-
-              <div className="hero-summary" aria-label="Program overview">
-                <div className="glass-card summary-card summary-card__primary">
-                  <div className="mini-stat">
-                    <span className="stat-number">6+</span>
-                    <span className="stat-text">LANGUAGES</span>
-                  </div>
-                  <div className="stat-row">
-                    <span>IELTS and exam review</span>
-                    <span>English, Japanese, Mandarin, German, Spanish</span>
-                  </div>
-                </div>
-
-                <div className="glass-card summary-card summary-card__secondary">
-                  <div className="panel-header">
-                    <span className="panel-label">Focus</span>
-                    <span className="panel-dot" />
-                  </div>
-                  <ul>
-                    <li>Exam preparation and review</li>
-                    <li>Speaking, writing, and listening support</li>
-                    <li>Language learning for daily life and goals</li>
-                  </ul>
+                <div className="proof-pill subtle">
+                  <ShieldCheck size={16} />
+                  Beginner to advanced pathways
                 </div>
               </div>
             </motion.div>
 
             <motion.div
-              className="hero-visual"
+              className="hero-panel"
               initial={{ opacity: 0, scale: 0.96 }}
               animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.15, duration: 0.8 }}
+              transition={{ duration: 0.7, delay: 0.1 }}
             >
-              <div className="visual-stack">
-                <div className="orb-square orb-sky" aria-hidden="true" />
+              <div className="preview-card">
+                <div className="floating-badge">
+                  <Sparkles size={14} />
+                  Daily streak: 18 days
+                </div>
+
+                <div className={`flashcard ${flipped ? 'is-flipped' : ''}`} onClick={() => setFlipped((state) => !state)}>
+                  <div className="flashcard-face flashcard-front">
+                    <span className="label">Vocabulary boost</span>
+                    <h3>{activeLanguage === 'Japanese' ? 'おはようございます' : activeLanguage === 'French' ? 'Bonjour, comment ça va ?' : activeLanguage === 'German' ? 'Guten Morgen!' : activeLanguage === 'Mandarin' ? '你好，你好吗？' : 'Good morning! How are you?'}</h3>
+                    <p>{activeLanguage === 'Japanese' ? 'Good morning — a polite greeting in daily life.' : 'Common phrase to greet someone naturally and warmly.'}</p>
+                    <button type="button" className="mini-btn">
+                      <Play size={14} />
+                      Listen
+                    </button>
+                  </div>
+
+                  <div className="flashcard-face flashcard-back">
+                    <span className="label">Translation</span>
+                    <h3>{activeLanguage === 'Japanese' ? 'おはようございます' : activeLanguage === 'French' ? 'Bonjour, comment ça va ?' : activeLanguage === 'German' ? 'Guten Morgen!' : activeLanguage === 'Mandarin' ? '你好，你好吗？' : 'Good morning! How are you?'}</h3>
+                    <p>Usual phrase for greetings in friendly, everyday situations.</p>
+                  </div>
+                </div>
+
+                <div className="speaker-row">
+                  <div className="sound-bars" aria-label="Speech visualization">
+                    {[...Array(8)].map((_, index) => (
+                      <span key={index} style={{ height: `${18 + (index % 5) * 9}px` }} />
+                    ))}
+                  </div>
+                  <button type="button" className="chip chip-active">
+                    <AudioLines size={14} />
+                    Pronunciation check
+                  </button>
+                </div>
+
+                <div className="progress-card">
+                  <div className="progress-head">
+                    <span>Fluency progress</span>
+                    <strong>82%</strong>
+                  </div>
+                  <div className="progress-track">
+                    <span style={{ width: '82%' }} />
+                  </div>
+                  <div className="progress-meta">
+                    <span>+14% this month</span>
+                    <span>Next milestone: B1</span>
+                  </div>
+                </div>
               </div>
             </motion.div>
           </div>
@@ -790,24 +290,23 @@ function App() {
 
         <section id="features" className="section-block">
           <div className="container">
-            <motion.div className="section-header" initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.2 }}>
-              <p className="eyebrow">A DIFFERENT WAY TO LEARN</p>
-              <h2>A Different Way to Learn</h2>
-              <p>Every lesson is designed around the learner—not simply the language.</p>
-            </motion.div>
+            <div className="section-heading">
+              <span className="eyebrow">Why learners stay</span>
+              <h2>Everything you need to build real confidence.</h2>
+            </div>
 
             <div className="feature-grid">
               {featureCards.map(({ icon: Icon, title, description }, index) => (
                 <motion.article
                   key={title}
-                  className="glass-card feature-card"
-                  initial={{ opacity: 0, y: 30 }}
+                  className="feature-card surface-card"
+                  initial={{ opacity: 0, y: 18 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, amount: 0.2 }}
-                  transition={{ duration: 0.45, delay: index * 0.06 }}
+                  transition={{ delay: index * 0.08, duration: 0.4 }}
                 >
                   <div className="feature-icon">
-                    <Icon size={22} />
+                    <Icon size={20} />
                   </div>
                   <h3>{title}</h3>
                   <p>{description}</p>
@@ -817,73 +316,47 @@ function App() {
           </div>
         </section>
 
-        <section className="section-block">
+        <section id="courses" className="section-block">
           <div className="container">
-            <motion.div className="section-header" initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.2 }}>
-              <p className="eyebrow">THE FIVE PILLARS</p>
-              <h2>The Five Pillars Behind Every Lesson</h2>
-              <p>A lesson is more than information delivered. It is a carefully designed learning experience.</p>
-            </motion.div>
+            <div className="section-heading">
+              <span className="eyebrow">Course catalog</span>
+              <h2>Choose the path that fits your goals.</h2>
+            </div>
 
-            <div className="pillars-intro">
-              {pillars.map(({ number, title, text }, index) => (
-                <motion.div
-                  key={title}
-                  className="pillar-item"
-                  initial={{ opacity: 0, x: index % 2 === 0 ? -24 : 24, y: 20 }}
-                  whileInView={{ opacity: 1, x: 0, y: 0 }}
-                  viewport={{ once: true, amount: 0.2 }}
-                  transition={{ duration: 0.5, delay: index * 0.08 }}
+            <div className="course-tabs" aria-label="Course languages">
+              {courseTabs.map((language) => (
+                <button
+                  key={language}
+                  type="button"
+                  className={activeTab === language ? 'course-tab active' : 'course-tab'}
+                  onClick={() => handleLanguagePick(language)}
                 >
-                  <div className="pillar-number">{number}</div>
-                  <div className="pillar-content">
-                    <h3>{title}</h3>
-                    <p>{text}</p>
-                  </div>
-                </motion.div>
+                  {language}
+                </button>
               ))}
             </div>
-          </div>
-        </section>
 
-        <section id="languages" className="section-block languages-section">
-          <div className="container">
-            <motion.div className="section-header" initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.2 }}>
-              <p className="eyebrow">LANGUAGES WE TEACH</p>
-              <h2>Languages We Teach</h2>
-              <p>Explore a structured learning path across six languages and multiple levels.</p>
-            </motion.div>
-
-            <div className="language-grid">
-              {languages.map((language, index) => (
+            <div className="catalog-grid">
+              {activeCourseSet.map((course, index) => (
                 <motion.article
-                  key={language.id}
-                  className="glass-card language-card"
-                  style={{ background: language.accent }}
-                  initial={{ opacity: 0, y: 30 }}
+                  key={course.level}
+                  className={`catalog-card ${course.accent}`}
+                  initial={{ opacity: 0, y: 18 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, amount: 0.2 }}
-                  transition={{ duration: 0.45, delay: index * 0.06 }}
+                  transition={{ delay: index * 0.08, duration: 0.4 }}
                 >
-                  <div className="language-header">
-                    <div className="language-flag" aria-label={`${language.country} flag`} title={language.country}>{language.flag}</div>
-                    <div className="language-kicker">{language.name}</div>
+                  <div className="catalog-topline">
+                    <span className="catalog-pill">{course.level}</span>
+                    <span className="catalog-lesson">{course.lessons}</span>
                   </div>
-                  <div className="language-region">{language.country}</div>
-                  <div className="language-native">{language.nativeName}</div>
-                  <p>{language.description}</p>
-                  <div className="language-levels">
-                    {language.levels.map((level) => (
-                      <span key={level}>{level}</span>
-                    ))}
+                  <h3>{course.detail}</h3>
+                  <div className="catalog-meta">
+                    <span><Clock3 size={14} /> {course.duration}</span>
+                    <span><Zap size={14} /> AI-guided</span>
                   </div>
-                  <div className="language-variants" aria-label={`${language.name} variants`}>
-                    {language.variants.map((variant) => (
-                      <span key={variant}>{variant}</span>
-                    ))}
-                  </div>
-                  <button type="button" className="text-btn" onClick={() => openLessonTargets(language.id, 'beginner')}>
-                    VIEW LESSON TARGETS <ArrowUpRight size={16} />
+                  <button type="button" className="catalog-btn">
+                    View path <ChevronRight size={16} />
                   </button>
                 </motion.article>
               ))}
@@ -891,382 +364,212 @@ function App() {
           </div>
         </section>
 
-        <section className="section-block explorer-section">
+        <section id="how-it-works" className="section-block">
           <div className="container">
-            <motion.div className="section-header" initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.2 }}>
-              <p className="eyebrow">LANGUAGE LEVEL EXPLORER</p>
-              <h2>Find Your Learning Path</h2>
-            </motion.div>
-
-            <div className="explorer-shell glass-card">
-              <div className="explorer-form">
-                <div className="field-group">
-                  <label htmlFor="languageSelect">Language</label>
-                  <select id="languageSelect" value={explorer.language} onChange={(event) => setExplorer((current) => ({ ...current, language: event.target.value }))}>
-                    {languages.map((language) => (
-                      <option key={language.id} value={language.id}>{language.name}</option>
-                    ))}
-                  </select>
-                </div>
-                <div className="field-group">
-                  <label htmlFor="currentLevel">Current level</label>
-                  <select id="currentLevel" value={explorer.currentLevel} onChange={(event) => setExplorer((current) => ({ ...current, currentLevel: event.target.value }))}>
-                    {levelOrder.map((level) => (
-                      <option key={level} value={level}>{levelNames[level]}</option>
-                    ))}
-                  </select>
-                </div>
-                <div className="field-group">
-                  <label htmlFor="targetLevel">Target level</label>
-                  <select id="targetLevel" value={explorer.targetLevel} onChange={(event) => setExplorer((current) => ({ ...current, targetLevel: event.target.value }))}>
-                    {levelOrder.map((level) => (
-                      <option key={level} value={level}>{levelNames[level]}</option>
-                    ))}
-                  </select>
-                </div>
-                <div className="field-group">
-                  <label htmlFor="objectiveSelect">Learning objective</label>
-                  <select id="objectiveSelect" value={explorer.goal} onChange={(event) => setExplorer((current) => ({ ...current, goal: event.target.value }))}>
-                    <option value="conversation">Conversation</option>
-                    <option value="travel">Travel</option>
-                    <option value="business">Business</option>
-                    <option value="exam">Examination</option>
-                  </select>
-                </div>
-              </div>
-
-              <div className="explorer-result">
-                <div className="result-meta">
-                  <span className="meta-label">LANGUAGE</span>
-                  <strong>{selectedLanguage.name}</strong>
-                </div>
-                <div className="result-meta">
-                  <span className="meta-label">CURRENT LEVEL</span>
-                  <strong>{levelNames[explorer.currentLevel]}</strong>
-                </div>
-                <div className="result-meta">
-                  <span className="meta-label">TARGET</span>
-                  <strong>{levelNames[explorer.targetLevel]}</strong>
-                </div>
-                <div className="result-meta">
-                  <span className="meta-label">GOAL</span>
-                  <strong>{explorer.goal.charAt(0).toUpperCase() + explorer.goal.slice(1)}</strong>
-                </div>
-
-                <div className="result-block">
-                  <h3>Recommended focus</h3>
-                  <ul>
-                    {explorerRecommendations.focus.map((item) => (
-                      <li key={item}>{item}</li>
-                    ))}
-                  </ul>
-                </div>
-
-                <div className="result-block">
-                  <h3>Suggested progression</h3>
-                  <ul>
-                    {explorerRecommendations.progression.map((item) => (
-                      <li key={item}>{item}</li>
-                    ))}
-                  </ul>
-                </div>
-
-                <div className="result-block">
-                  <h3>Example activities</h3>
-                  <ul>
-                    {explorerRecommendations.activities.map((item) => (
-                      <li key={item}>{item}</li>
-                    ))}
-                  </ul>
-                </div>
-
-                <button type="button" className="primary-btn compact" onClick={() => scrollToSection('booking')}>
-                  BOOK A SERVICE <ChevronRight size={16} />
-                </button>
-              </div>
+            <div className="section-heading">
+              <span className="eyebrow">How it works</span>
+              <h2>From day one to real fluency.</h2>
             </div>
-          </div>
-        </section>
 
-        <section id="services" className="section-block">
-          <div className="container">
-            <motion.div className="section-header" initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.2 }}>
-              <p className="eyebrow">LEARNING DESIGNED AROUND YOUR GOALS</p>
-              <h2>Learning Designed Around Your Goals</h2>
-            </motion.div>
-
-            <div className="service-grid">
-              {services.map(({ icon: Icon, title, description }, index) => (
-                <motion.article
-                  key={title}
-                  className="glass-card service-card"
-                  initial={{ opacity: 0, y: 28 }}
+            <div className="steps-row">
+              {steps.map((step, index) => (
+                <motion.div
+                  key={step}
+                  className="step-card surface-card"
+                  initial={{ opacity: 0, y: 18 }}
                   whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, amount: 0.2 }}
-                  transition={{ duration: 0.45, delay: index * 0.06 }}
+                  viewport={{ once: true, amount: 0.3 }}
+                  transition={{ delay: index * 0.08, duration: 0.4 }}
                 >
-                  <div className="feature-icon">
-                    <Icon size={22} />
-                  </div>
-                  <h3>{title}</h3>
-                  <p>{description}</p>
-                </motion.article>
+                  <div className="step-number">0{index + 1}</div>
+                  <p>{step}</p>
+                </motion.div>
               ))}
             </div>
           </div>
         </section>
 
-        <section id="about" className="section-block about-section">
-          <div className="container about-grid">
-            <motion.div className="about-copy" initial={{ opacity: 0, x: -24 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true, amount: 0.2 }}>
-              <p className="eyebrow">ABOUT ILTC</p>
-              <h2>Top 1 IELTS, Review, and Language Center</h2>
-              <div className="teacher-name">I Learn Language Tutorial Center</div>
-              <div className="teacher-role">ILTC • Lipa City, Batangas</div>
-
-              <blockquote>
-                “We provide high-quality guidance in language learning and exam review so students can gain confidence, sharpen skill, and reach their goals with clarity.”
-              </blockquote>
-
+        <section id="dashboard" className="section-block dash-section">
+          <div className="container dash-shell">
+            <div className="dash-copy">
+              <span className="eyebrow">Practice dashboard</span>
+              <h2>Learn in short bursts. Track progress in real time.</h2>
               <p>
-                ILTC offers dependable support for IELTS, UKVI, Lifeskills, OET, PTE, LET, Civil Service, NMAT, Criminology, College Entrance Test, NLE, and other major tests.
-              </p>
-              <p>
-                We also provide tutorials in English, Japanese, Mandarin, German, Spanish, and other languages to support learners who want practical language skills in study, work, and daily life.
+                Build speaking confidence with guided exercises, instant feedback, and adaptive recommendations based on your real performance.
               </p>
 
-              <div className="contact-block">
-                <h3>Contact</h3>
-                <a href="mailto:ilearnlanguagetutorialcenter@gmail.com">ilearnlanguagetutorialcenter@gmail.com</a>
-                <a href="tel:+639611244639">+63 961 124 4639</a>
-                <a href="https://www.facebook.com/share/1Ds1EKk1pF/?mibextid=wwXIfr" target="_blank" rel="noreferrer">Media Kit</a>
-                <a href="https://www.tiktok.com/@iltcmainaccountoffice?_r=1&_t=zs-99nmbexddvw" target="_blank" rel="noreferrer">TikTok: @iltcmainaccountoffice</a>
-                <span>Lipa City, Batangas (4226)</span>
-              </div>
-            </motion.div>
-
-            <motion.div className="glass-card matrix-card" initial={{ opacity: 0, x: 24 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true, amount: 0.2 }}>
-              <div className="matrix-header">
-                <h3>Language Matrix</h3>
-                <span>Beginner to Advanced</span>
-              </div>
-
-              <div className="matrix-table" aria-label="Language levels matrix">
-                <div className="matrix-row matrix-head">
-                  <div>Language</div>
-                  <div>Beginner</div>
-                  <div>Elementary</div>
-                  <div>Intermediate</div>
-                  <div>Advanced</div>
+              <div className="mini-metrics">
+                <div>
+                  <strong>14 min</strong>
+                  <span>Average daily session</span>
                 </div>
-                {languageMatrix.map((entry) => (
-                  <div key={entry.label} className="matrix-row">
-                    <div>{entry.label}</div>
-                    {Object.entries(entry.levels).map(([level, isActive]) => (
-                      <div key={`${entry.label}-${level}`} className={isActive ? 'cell active' : 'cell'} title={`Designed for ${level} learners`}>
-                        {isActive ? '✓' : '—'}
-                      </div>
-                    ))}
-                  </div>
-                ))}
+                <div>
+                  <strong>6x</strong>
+                  <span>Faster recall</span>
+                </div>
+                <div>
+                  <strong>92%</strong>
+                  <span>Retention score</span>
+                </div>
               </div>
-            </motion.div>
+            </div>
+
+            <div className="exercise-panel surface-card">
+              <div className="exercise-topbar">
+                <div>
+                  <span className="tiny-label">Current challenge</span>
+                  <h3>{activeLanguage} conversation lab</h3>
+                </div>
+                <button type="button" className="chip chip-light">
+                  <Globe2 size={14} />
+                  Live practice
+                </button>
+              </div>
+
+              <div className="exercise-prompt">
+                <p>{practice.prompt}</p>
+              </div>
+
+              <div className="option-list">
+                {practice.options.map((option) => {
+                  const isSelected = selectedAnswer === option
+                  const isCorrect = option === practice.correct
+                  const className = showResult
+                    ? isCorrect
+                      ? 'answer answer-correct'
+                      : isSelected
+                        ? 'answer answer-wrong'
+                        : 'answer'
+                    : isSelected
+                      ? 'answer answer-selected'
+                      : 'answer'
+
+                  return (
+                    <button
+                      key={option}
+                      type="button"
+                      className={className}
+                      onClick={() => {
+                        setSelectedAnswer(option)
+                        setShowResult(true)
+                      }}
+                    >
+                      {isCorrect && showResult ? <Check size={16} /> : null}
+                      {option}
+                    </button>
+                  )
+                })}
+              </div>
+
+              {showResult && (
+                <div className={isAnswerCorrect ? 'feedback success' : 'feedback error'}>
+                  {isAnswerCorrect ? 'Correct — excellent choice!' : `Not quite — ${practice.tip}`}
+                </div>
+              )}
+
+              <div className="exercise-actions">
+                <button type="button" className="btn btn-primary small">
+                  <Play size={14} />
+                  Play audio
+                </button>
+                <button type="button" className="btn btn-secondary small" onClick={() => { setSelectedAnswer(null); setShowResult(false) }}>
+                  Try another
+                </button>
+              </div>
+            </div>
           </div>
         </section>
 
-        <section id="booking" className="section-block booking-section">
-          <div className="container booking-shell glass-card">
-            <div className="booking-intro">
-              <p className="eyebrow">READY TO START LEARNING?</p>
-              <h2>Ready to Start Learning?</h2>
-              <p>Tell us what you want to learn, where you are starting from, and where you want to go.</p>
-              <button type="button" className="primary-btn" onClick={() => scrollToSection('booking')}>
-                BOOK A SERVICE
-              </button>
+        <section className="section-block testimonials-section">
+          <div className="container">
+            <div className="section-heading">
+              <span className="eyebrow">Loved by learners</span>
+              <h2>Students are seeing real progress, fast.</h2>
             </div>
 
-            <form className="booking-form" onSubmit={handleSubmit} noValidate>
-              <div className="form-grid">
-                <div className="field-group">
-                  <label htmlFor="fullName">Full Name</label>
-                  <input id="fullName" name="fullName" type="text" value={bookingForm.fullName} onChange={handleBookingChange} />
-                  {formErrors.fullName && <span className="error-message">{formErrors.fullName}</span>}
-                </div>
-                <div className="field-group">
-                  <label htmlFor="email">Email Address</label>
-                  <input id="email" name="email" type="email" value={bookingForm.email} onChange={handleBookingChange} />
-                  {formErrors.email && <span className="error-message">{formErrors.email}</span>}
-                </div>
-                <div className="field-group">
-                  <label htmlFor="phone">Contact Number</label>
-                  <input id="phone" name="phone" type="tel" value={bookingForm.phone} onChange={handleBookingChange} />
-                  {formErrors.phone && <span className="error-message">{formErrors.phone}</span>}
-                </div>
-                <div className="field-group">
-                  <label htmlFor="language">Language</label>
-                  <select id="language" name="language" value={bookingForm.language} onChange={handleBookingChange}>
-                    {languages.map((language) => (
-                      <option key={language.id} value={language.name}>{language.name}</option>
+            <div className="testimonial-grid">
+              {testimonials.map((item) => (
+                <article key={item.name} className="surface-card testimonial-card">
+                  <div className="rating-row">
+                    {[...Array(5)].map((_, index) => (
+                      <Star key={index} size={16} fill="currentColor" />
                     ))}
-                  </select>
-                </div>
-                <div className="field-group">
-                  <label htmlFor="currentLevel">Current Level</label>
-                  <select id="currentLevel" name="currentLevel" value={bookingForm.currentLevel} onChange={handleBookingChange}>
-                    {Object.values(levelNames).map((level) => (
-                      <option key={level} value={level}>{level}</option>
-                    ))}
-                  </select>
-                </div>
-                <div className="field-group">
-                  <label htmlFor="desiredLevel">Desired Level</label>
-                  <select id="desiredLevel" name="desiredLevel" value={bookingForm.desiredLevel} onChange={handleBookingChange}>
-                    {Object.values(levelNames).map((level) => (
-                      <option key={level} value={level}>{level}</option>
-                    ))}
-                  </select>
-                </div>
-                <div className="field-group">
-                  <label htmlFor="goal">Learning Goal</label>
-                  <input id="goal" name="goal" type="text" value={bookingForm.goal} onChange={handleBookingChange} />
-                  {formErrors.goal && <span className="error-message">{formErrors.goal}</span>}
-                </div>
-                <div className="field-group">
-                  <label htmlFor="schedule">Preferred Schedule</label>
-                  <select id="schedule" name="schedule" value={bookingForm.schedule} onChange={handleBookingChange}>
-                    <option value="Flexible">Flexible</option>
-                    <option value="Weekday mornings">Weekday mornings</option>
-                    <option value="Weekday evenings">Weekday evenings</option>
-                    <option value="Weekends">Weekends</option>
-                  </select>
-                </div>
-                <div className="field-group wide">
-                  <label htmlFor="format">Preferred Learning Format</label>
-                  <select id="format" name="format" value={bookingForm.format} onChange={handleBookingChange}>
-                    <option value="Online">Online</option>
-                    <option value="In-person">In-person</option>
-                    <option value="Flexible">Flexible</option>
-                  </select>
-                </div>
-                <div className="field-group wide">
-                  <label htmlFor="message">Tell us more about your learning goals.</label>
-                  <textarea id="message" name="message" rows="4" value={bookingForm.message} onChange={handleBookingChange} placeholder="Tell us about your objectives, preferred pace, and the kind of support you want." />
-                </div>
-              </div>
+                    <span>{item.score}</span>
+                  </div>
+                  <p className="quote">“{item.quote}”</p>
+                  <div className="user-meta">
+                    <strong>{item.name}</strong>
+                    <span>{item.role}</span>
+                  </div>
+                </article>
+              ))}
+            </div>
+          </div>
+        </section>
 
-              <button type="submit" className="primary-btn submit-btn">
-                SUBMIT SERVICE REQUEST
-              </button>
+        <section id="pricing" className="section-block pricing-section">
+          <div className="container">
+            <div className="section-heading">
+              <span className="eyebrow">Flexible plans</span>
+              <h2>Pick the plan that fits your learning rhythm.</h2>
+            </div>
 
-              {submitSuccess && (
-                <p className="success-message">Your service request has been submitted. Yuan CY will be in touch soon.</p>
-              )}
-            </form>
+            <div className="pricing-grid">
+              {pricingPlans.map((plan) => (
+                <article key={plan.name} className={plan.featured ? 'pricing-card featured' : 'pricing-card'}>
+                  <div className="pricing-top">
+                    <span className="pricing-name">{plan.name}</span>
+                    {plan.featured ? <span className="featured-tag">Most popular</span> : null}
+                  </div>
+                  <div className="price-row">
+                    <strong>{plan.price}</strong>
+                    <span>/ month</span>
+                  </div>
+                  <p>{plan.description}</p>
+                  <ul>
+                    {plan.perks.map((perk) => (
+                      <li key={perk}><Check size={14} /> {perk}</li>
+                    ))}
+                  </ul>
+                  <button type="button" className={plan.featured ? 'btn btn-primary' : 'btn btn-secondary'}>
+                    {plan.featured ? 'Start free trial' : 'Choose plan'}
+                  </button>
+                </article>
+              ))}
+            </div>
           </div>
         </section>
       </main>
 
-      <footer id="footer" className="site-footer">
+      <footer className="site-footer">
         <div className="container footer-grid">
           <div>
-            <div className="brand-badge footer-brand">
-              <span className="brand-mark">I</span>
-              <span className="brand-text">ILTC</span>
+            <div className="brand brand-footer">
+              <img src="/logo.jpg" alt="Lingu-A logo" className="brand-logo" />
+              <span className="brand-name">Lingu-A</span>
             </div>
-            <p className="footer-tagline">Top 1 IELTS, Review, and Language Center.</p>
-            <p className="footer-languages">English • Japanese • Mandarin • German • Spanish • Other languages</p>
+            <p className="footer-copy">Bite-sized language learning for everyday confidence.</p>
           </div>
 
           <div className="footer-links">
-            <h3>Navigation</h3>
-            {navItems.map((item) => (
-              <button key={item.id} type="button" className="footer-link" onClick={() => scrollToSection(item.id)}>
-                {item.label}
-              </button>
-            ))}
+            <h4>Company</h4>
+            <a href="#features">Features</a>
+            <a href="#courses">Courses</a>
+            <a href="#pricing">Pricing</a>
           </div>
 
-          <div className="footer-contact">
-            <h3>Contact</h3>
-            <a href="mailto:ilearnlanguagetutorialcenter@gmail.com"><Mail size={16} /> ilearnlanguagetutorialcenter@gmail.com</a>
-            <a href="tel:+639611244639"><Phone size={16} /> +63 961 124 4639</a>
-            <a href="https://wa.me/639611244639" target="_blank" rel="noreferrer"><MessageSquareText size={16} /> WhatsApp: +63 961 124 4639</a>
-            <a href="https://www.tiktok.com/@iltcmainaccountoffice?_r=1&_t=zs-99nmbexddvw" target="_blank" rel="noreferrer"><MessageSquareText size={16} /> TikTok: @iltcmainaccountoffice</a>
-            <span className="footer-meta"><MonitorSmartphone size={16} /> WeChat: I Learn-Language Tutorial Center</span>
-            <a href="https://www.facebook.com/share/1Ds1EKk1pF/?mibextid=wwXIfr" target="_blank" rel="noreferrer"><Building2 size={16} /> Media Kit</a>
-            <span className="footer-meta"><Building2 size={16} /> Lipa City, Batangas (4226)</span>
+          <div className="footer-links">
+            <h4>Legal</h4>
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms of Service</a>
+            <a href="#">Language settings</a>
           </div>
         </div>
+
         <div className="container footer-bottom">
-          <span>© 2026 I Learn Language Tutorial Center. All rights reserved.</span>
+          <span>© 2026 Lingu-A. All rights reserved.</span>
         </div>
       </footer>
-
-      <AnimatePresence>
-        {modalLanguage && (
-          <motion.div
-            className="modal-backdrop"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={() => setModalLanguage(null)}
-          >
-            <motion.div
-              className="modal-panel glass-card"
-              initial={{ opacity: 0, y: 30, scale: 0.96 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: 20, scale: 0.96 }}
-              transition={{ duration: 0.25 }}
-              onClick={(event) => event.stopPropagation()}
-              role="dialog"
-              aria-modal="true"
-              aria-labelledby="modalTitle"
-            >
-              <div className="modal-head">
-                <div>
-                  <p className="eyebrow modal-pretitle">Lesson targets</p>
-                  <h3 id="modalTitle">{modalLanguageData.name} — {levelNames[modalLevel] || 'Beginner'}</h3>
-                </div>
-                <button type="button" className="icon-btn" aria-label="Close lesson targets" onClick={() => setModalLanguage(null)}>
-                  <X size={18} />
-                </button>
-              </div>
-
-              <div className="modal-controls">
-                <label htmlFor="modalLanguageSelect">Language</label>
-                <select id="modalLanguageSelect" value={modalLanguage} onChange={(event) => {
-                  setModalLanguage(event.target.value)
-                  setModalLevel('beginner')
-                }}>
-                  {languages.map((language) => (
-                    <option key={language.id} value={language.id}>{language.name}</option>
-                  ))}
-                </select>
-
-                <label htmlFor="modalLevelSelect">Level</label>
-                <select id="modalLevelSelect" value={modalLevel} onChange={(event) => setModalLevel(event.target.value)}>
-                  {Object.entries(levelNames).map(([value, label]) => (
-                    <option key={value} value={value}>{label}</option>
-                  ))}
-                </select>
-              </div>
-
-              <div className="modal-list">
-                {(lessonTargetDatabase[modalLanguage] && lessonTargetDatabase[modalLanguage][modalLevel]) ? (
-                  lessonTargetDatabase[modalLanguage][modalLevel].map((target, index) => (
-                    <div key={`${modalLanguage}-${modalLevel}-${index}`} className="modal-item">
-                      <CheckCircle2 size={18} />
-                      <span>{target}</span>
-                    </div>
-                  ))
-                ) : (
-                  <p>No lesson targets available for this selection yet.</p>
-                )}
-              </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
     </div>
   )
 }
