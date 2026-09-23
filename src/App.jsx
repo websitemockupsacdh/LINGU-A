@@ -2,12 +2,7 @@ import { useState } from 'react'
 import { motion } from 'framer-motion'
 import {
   ArrowRight,
-  BookOpen,
-  BriefcaseBusiness,
   Check,
-  ChevronRight,
-  Clock3,
-  GraduationCap,
   Languages,
   Mail,
   MessageSquareText,
@@ -15,8 +10,6 @@ import {
   ShieldCheck,
   Sparkles,
   Star,
-  Target,
-  TrendingUp,
 } from 'lucide-react'
 import './App.css'
 
@@ -80,7 +73,7 @@ const pricingCards = [
   {
     title: 'All-Inclusive Full Program Batch Package',
     price: '₱40,000',
-    promo: '~~₱60,000~~',
+    promo: '₱60,000',
     detail: 'Complete 22-session intensive pathway covering vocabulary, grammar, reading, listening, speaking, mock exams, and certification.',
     badge: 'September Batch Promo',
     featured: true,
@@ -194,6 +187,7 @@ function App() {
 
   return (
     <div className="app-shell">
+      {/* Topbar Navigation */}
       <header className="topbar">
         <div className="container nav-wrap">
           <button className="brand" type="button" onClick={() => scrollToSection('home')} aria-label="Go to home section">
@@ -216,6 +210,7 @@ function App() {
       </header>
 
       <main>
+        {/* Hero Section */}
         <section id="home" className="hero-section">
           <div className="container hero-grid">
             <motion.div
@@ -289,6 +284,7 @@ function App() {
           </div>
         </section>
 
+        {/* Featured Highlights */}
         <section className="section-block featured-section">
           <div className="container">
             <div className="section-heading">
@@ -328,6 +324,7 @@ function App() {
           </div>
         </section>
 
+        {/* Offered Languages */}
         <section id="languages" className="section-block">
           <div className="container">
             <div className="section-heading">
@@ -357,6 +354,7 @@ function App() {
           </div>
         </section>
 
+        {/* Course Tiers & Pricing */}
         <section id="pricing" className="section-block price-section">
           <div className="container">
             <div className="section-heading">
@@ -381,7 +379,7 @@ function App() {
 
                   <div className="price-wrap">
                     <strong>{plan.price}</strong>
-                    {plan.promo ? <span className="promo-line">{plan.promo}</span> : null}
+                    {plan.promo ? <span className="promo-line"><s>{plan.promo}</s></span> : null}
                   </div>
 
                   <p>{plan.detail}</p>
@@ -392,7 +390,11 @@ function App() {
                     <li><Check size={16} /> Instructor-guided support</li>
                   </ul>
 
-                  <button type="button" className={plan.featured ? 'btn btn-primary' : 'btn btn-secondary'}>
+                  <button
+                    type="button"
+                    className={plan.featured ? 'btn btn-primary' : 'btn btn-secondary'}
+                    onClick={() => scrollToSection('contact')}
+                  >
                     {plan.featured ? 'Reserve your slot' : 'Inquire now'}
                   </button>
                 </motion.article>
@@ -401,6 +403,7 @@ function App() {
           </div>
         </section>
 
+        {/* Curriculum Guide */}
         <section id="curriculum" className="section-block curriculum-section">
           <div className="container">
             <div className="section-heading">
@@ -437,6 +440,7 @@ function App() {
           </div>
         </section>
 
+        {/* Student Outcomes */}
         <section id="outcomes" className="section-block outcomes-section">
           <div className="container outcomes-grid">
             <div className="outcomes-copy">
@@ -462,6 +466,7 @@ function App() {
           </div>
         </section>
 
+        {/* Study Options */}
         <section className="section-block study-section">
           <div className="container">
             <div className="section-heading">
@@ -491,6 +496,7 @@ function App() {
           </div>
         </section>
 
+        {/* Enrollment Requirements */}
         <section className="section-block enrollment-section">
           <div className="container requirements-grid">
             <div className="requirement-panel surface-card">
@@ -515,6 +521,7 @@ function App() {
           </div>
         </section>
 
+        {/* Contact & Inquiry */}
         <section id="contact" className="section-block contact-section">
           <div className="container contact-shell surface-card">
             <div className="contact-copy">
@@ -583,6 +590,7 @@ function App() {
         </section>
       </main>
 
+      {/* Footer */}
       <footer className="site-footer">
         <div className="container footer-grid">
           <div>
