@@ -121,13 +121,13 @@ const featuredHighlights = [
   {
     title: 'TOP 2 - PROFESSIONAL LANGUAGE PROFICIENCY LICENSURE EXAMINATION (JANUARY 2026)',
     rating: 'OVERALL RATING: 100%',
-    image: '/PREV1.JPG',
+    image: '/prev1.jpg',
     link: 'https://www.facebook.com/permalink.php?story_fbid=pfbid02LZDszouLZBdyJRAUnXrDM8MGZXmRTiiwWY14xLqEPU3ABidoNcdyZ88Ycg77EEM4l&id=61593960765889',
   },
   {
     title: 'English Night Class 09-14-2026',
     rating: 'Featured class showcase',
-    image: '/PREV2.png',
+    image: '/prev2.png',
     link: 'https://www.facebook.com/permalink.php?story_fbid=pfbid02pkRejMYq2rBXRKh3CS16bwimuyr325M1G9FeWSfXgUyR7rMknc8suAxhEZTxst7wl&id=61593960765889',
   },
 ]
@@ -197,7 +197,7 @@ function App() {
       <header className="topbar">
         <div className="container nav-wrap">
           <button className="brand" type="button" onClick={() => scrollToSection('home')} aria-label="Go to home section">
-            <img src="/logo.jpg" alt="I Learn Language Tutorial Center logo" className="brand-logo" />
+            <img src="/illtclogo.jpg" alt="I Learn Language Tutorial Center logo" className="brand-logo" />
             <span className="brand-name">I Learn Language Tutorial Center</span>
           </button>
 
@@ -587,7 +587,7 @@ function App() {
         <div className="container footer-grid">
           <div>
             <div className="brand brand-footer">
-              <img src="/logo.jpg" alt="I Learn Language Tutorial Center logo" className="brand-logo" />
+              <img src="/illtclogo.jpg" alt="I Learn Language Tutorial Center logo" className="brand-logo" />
               <span className="brand-name">I Learn</span>
             </div>
             <p className="footer-copy">Structured multilingual training for confident communication, exam preparation, and real-world fluency.</p>
