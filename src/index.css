@@ -3,20 +3,18 @@
 :root {
   --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
   --font-serif: 'Cormorant Garamond', Georgia, serif;
-
   --bg-dark: #050608;
   --bg-surface: rgba(18, 24, 38, 0.75);
   --bg-surface-border: rgba(255, 255, 255, 0.1);
   --bg-card-hover: rgba(30, 41, 59, 0.8);
-
   --accent-blue: #3b82f6;
   --accent-blue-hover: #2563eb;
   --accent-glow: rgba(59, 130, 246, 0.25);
   --accent-red: #be123c;
-
   --text-main: #f3f7ff;
   --text-muted: #94a3b8;
   --text-subtle: #64748b;
+  --navy: #031031;
 
   font-family: var(--font-sans);
   line-height: 1.5;
@@ -771,7 +769,7 @@ a:focus-visible {
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  color: var(--text-main);
+  color: var(--accent-blue-hover);
   text-decoration: none;
   font-size: 0.9375rem;
 }
@@ -841,7 +839,7 @@ a:focus-visible {
 .site-footer {
   border-top: 1px solid var(--bg-surface-border);
   padding: 4rem 0 2rem;
-  background: #030406;
+  background: var(--navy);
 }
 
 .footer-grid {
@@ -852,7 +850,7 @@ a:focus-visible {
 }
 
 .footer-copy {
-  color: var(--text-subtle);
+  color: var(--text-main);
   font-size: 0.875rem;
   margin-top: 1rem;
   max-width: 20rem;
@@ -871,7 +869,7 @@ a:focus-visible {
 }
 
 .footer-links a {
-  color: var(--text-muted);
+  color: var(--text-main);
   text-decoration: none;
   font-size: 0.875rem;
 }
@@ -884,7 +882,7 @@ a:focus-visible {
   padding-top: 2rem;
   border-top: 1px solid rgba(255, 255, 255, 0.05);
   font-size: 0.8125rem;
-  color: var(--text-subtle);
+  color: var(--text-main);
   text-align: center;
 }
 
@@ -899,7 +897,7 @@ a:focus-visible {
   }
 
   .main-nav {
-    display: none; /* Maaaring palitan ng mobile drawer kung kailangan */
+    display: none; /* Hidden on mobile/tablet screen widths */
   }
 
   .contact-shell {
