@@ -926,5 +926,127 @@ a:focus-visible {
   .footer-grid {
     grid-template-columns: 1fr;
     gap: 2rem;
+  }/* ==========================================
+   MOBILE & RESPONSIVE ENHANCEMENTS
+   ========================================== */
+
+/* 1. Prevent Horizontal Overflow / Side-Scroll */
+html, body {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+/* 2. Responsive Dynamic Typography & Spacing */
+.hero-copy h1 {
+  font-size: clamp(2.25rem, 5vw + 1rem, 3rem);
+}
+
+.section-heading h2 {
+  font-size: clamp(1.5rem, 4vw + 0.5rem, 2rem);
+}
+
+.section-block {
+  padding: clamp(2.5rem, 6vw, 4.5rem) 0;
+}
+
+/* 3. Mobile-Optimized Grid Breakpoints */
+.featured-grid,
+.language-grid,
+.pricing-grid {
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.25rem;
+}
+
+/* 4. Hamburger Menu Button (Default Hidden sa Desktop) */
+.mobile-menu-btn {
+  display: none;
+  background: none;
+  border: none;
+  color: var(--text-main);
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 0.5rem;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 5. Touch Feedback for Mobile Screens */
+@media (hover: none) {
+  .btn:active,
+  .glow-card:active {
+    transform: scale(0.98);
   }
+}
+
+/* 6. Tablet & Mobile Layout Adjustments (992px and below) */
+@media (max-width: 992px) {
+  .mobile-menu-btn {
+    display: flex;
+  }
+
+  /* Mobile Dropdown Navigation */
+  .main-nav {
+    display: none;
+    position: absolute;
+    top: 4.5rem;
+    left: 0;
+    right: 0;
+    background: rgba(5, 6, 8, 0.95);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    flex-direction: column;
+    padding: 1.5rem;
+    border-bottom: 1px solid var(--bg-surface-border);
+    gap: 1.25rem;
+    align-items: flex-start;
+  }
+
+  /* Toggle class kapag pinihit ang hamburger button */
+  .main-nav.is-open {
+    display: flex;
+  }
+
+  .nav-link {
+    width: 100%;
+    text-align: left;
+    padding: 0.5rem 0;
+    font-size: 1rem;
+  }
+}
+
+/* 7. Small Mobile Screens (640px and below) */
+@media (max-width: 640px) {
+  .container {
+    padding: 0 1rem;
+  }
+
+  .hero-actions {
+    flex-direction: column;
+    width: 100%;
+    gap: 0.75rem;
+  }
+
+  .hero-actions .btn {
+    width: 100%;
+  }
+
+  .trust-row {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem;
+  }
+
+  .mini-card {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .pricing-card {
+    padding: 1.5rem;
+  }
+
+  .contact-shell {
+    padding: 1.5rem;
+  }
+}
 }

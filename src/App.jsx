@@ -625,3 +625,35 @@ function App() {
 }
 
 export default App
+
+function Navbar() {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  return (
+    <header className="topbar">
+      <div className="container nav-wrap">
+        <button className="brand">
+          <img src="/logo.jpg" alt="Logo" className="brand-logo" />
+          <span className="brand-name">My Brand</span>
+        </button>
+
+        {/* Hamburger Button para sa Mobile */}
+        <button 
+          className="mobile-menu-btn" 
+          onClick={() => setIsMenuOpen(!isMenuOpen)}
+          aria-label="Toggle Navigation"
+        >
+          {isMenuOpen ? '✕' : '☰'}
+        </button>
+
+        {/* Navigation Links */}
+        <nav className={`main-nav ${isMenuOpen ? 'is-open' : ''}`}>
+          <button className="nav-link">Home</button>
+          <button className="nav-link">Courses</button>
+          <button className="nav-link">Pricing</button>
+          <button className="btn btn-primary small">Get Started</button>
+        </nav>
+      </div>
+    </header>
+  );
+}
