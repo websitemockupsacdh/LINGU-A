@@ -63,3 +63,26 @@ a:focus-visible {
   outline: 2px solid rgba(167, 188, 255, 0.9);
   outline-offset: 2px;
 }
+.featured-preview-image {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  min-height: 210px;
+  width: 100%;
+  border-radius: 18px;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+  overflow: hidden;
+}
+
+.featured-preview-image.prev-1 {
+  background-image: url('/prev1.jpg');
+}
+
+.featured-preview-image.prev-2 {
+  background-image: url('/prev2.png');
+}
