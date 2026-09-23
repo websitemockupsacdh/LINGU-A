@@ -1,194 +1,217 @@
 import { useState } from 'react'
-import { AnimatePresence, motion } from 'framer-motion'
+import { motion } from 'framer-motion'
 import {
   ArrowRight,
-  AudioLines,
-  BookOpenText,
+  BookOpen,
+  BriefcaseBusiness,
   Check,
   ChevronRight,
   Clock3,
-  Globe2,
+  GraduationCap,
   Languages,
-  Mic,
-  Play,
+  Mail,
+  MessageSquareText,
+  Phone,
   ShieldCheck,
   Sparkles,
   Star,
   Target,
   TrendingUp,
-  Zap,
 } from 'lucide-react'
 import './App.css'
 
 const navItems = [
-  { id: 'features', label: 'Features' },
-  { id: 'courses', label: 'Courses / Languages' },
-  { id: 'how-it-works', label: 'How It Works' },
-  { id: 'pricing', label: 'Pricing' },
-  { id: 'dashboard', label: 'Practice Dashboard' },
+  { id: 'home', label: 'Home' },
+  { id: 'languages', label: 'Offered Languages' },
+  { id: 'pricing', label: 'Course Tiers & Pricing' },
+  { id: 'curriculum', label: 'Curriculum Guide' },
+  { id: 'outcomes', label: 'Student Outcomes' },
+  { id: 'contact', label: 'Contact' },
 ]
 
-const featureCards = [
+const languageCards = [
   {
-    icon: Target,
-    title: 'Interactive Vocabulary Modules',
-    description: 'Context-rich flashcards with audio, repetition loops, and rapid recall checks built for retention.',
+    name: 'Japanese',
+    tag: 'JLPT N5 Prep & Career Pathways',
+    description: 'Structured modules for speaking, reading, listening, and official exam preparation.',
   },
   {
-    icon: Mic,
-    title: 'AI Pronunciation Coach',
-    description: 'Real-time speech scoring gives instant feedback on clarity, rhythm, and accent accuracy.',
+    name: 'French',
+    tag: 'Foundations to Professional Communication',
+    description: 'Build fluency from A1 through confident B2 communication for daily and work contexts.',
   },
   {
-    icon: BookOpenText,
-    title: 'Immersive Conversation Practice',
-    description: 'Role-play with lifelike dialogue scenarios that adapt to your pronunciation and confidence level.',
+    name: 'Mandarin & Cantonese',
+    tag: 'Speaking, Listening & Cultural Practice',
+    description: 'Focused training for conversation, pronunciation, and practical communication in real situations.',
   },
   {
-    icon: TrendingUp,
-    title: 'Gamified Progress Tracking',
-    description: 'Daily streaks, match scores, and achievement badges keep your language growth visible and motivating.',
+    name: 'Spanish',
+    tag: 'Travel, Communication & Confidence',
+    description: 'Progressive grammar and vocabulary sequences designed for day-to-day conversational fluency.',
+  },
+  {
+    name: 'Portuguese',
+    tag: 'Practical and Career-Oriented Learning',
+    description: 'Strong speaking foundations and useful expressions for social and professional use.',
+  },
+  {
+    name: 'Thai',
+    tag: 'Tone, Scripts & Everyday fluency',
+    description: 'Build strong pronunciation habits and daily communication confidence through guided practice.',
   },
 ]
 
-const courseTabs = ['Spanish', 'French', 'Japanese', 'German', 'Mandarin', 'English']
+const pricingCards = [
+  {
+    title: 'VIP Online Class (One-on-One)',
+    price: '₱30,000',
+    detail: 'Personalized 1-on-1 online instruction tailored to student pace and specific goals.',
+    badge: 'Private coaching',
+    featured: false,
+  },
+  {
+    title: 'Home Base - Group Class',
+    price: '₱40,000',
+    detail: 'Interactive group instruction including all instructor-related expenses for on-site learning.',
+    badge: 'Small group',
+    featured: false,
+  },
+  {
+    title: 'All-Inclusive Full Program Batch Package',
+    price: '₱40,000',
+    promo: '~~₱60,000~~',
+    detail: 'Complete 22-session intensive pathway covering vocabulary, grammar, reading, listening, speaking, mock exams, and certification.',
+    badge: 'September Batch Promo',
+    featured: true,
+  },
+]
 
-const courseCatalog = {
-  Spanish: [
-    { level: 'Beginner A1–A2', lessons: '24 lessons', duration: '4 weeks', accent: 'purple', detail: 'Travel phrases and everyday confidence' },
-    { level: 'Intermediate B1–B2', lessons: '32 lessons', duration: '6 weeks', accent: 'cyan', detail: 'Conversation flow and grammar depth' },
-    { level: 'Advanced C1', lessons: '18 lessons', duration: '4 weeks', accent: 'mint', detail: 'Nuanced expression and workplace fluency' },
-  ],
+const curriculumSets = {
   French: [
-    { level: 'Beginner A1–A2', lessons: '22 lessons', duration: '4 weeks', accent: 'purple', detail: 'Practical speaking starters' },
-    { level: 'Intermediate B1–B2', lessons: '30 lessons', duration: '6 weeks', accent: 'cyan', detail: 'Listening and real-world dialogue' },
-    { level: 'Advanced C1', lessons: '20 lessons', duration: '5 weeks', accent: 'mint', detail: 'Fluency for travel and business' },
+    { range: 'Sessions 1–5', title: 'Language Foundations', text: 'Pronunciation, alphabet/phonics, basic vocabulary, and essential listening patterns.' },
+    { range: 'Sessions 6–11', title: 'Grammar & Daily Communication', text: 'Sentence structure, verbs like Être and Avoir, verbs in context, and daily routines.' },
+    { range: 'Sessions 12–15', title: 'Practical Vocabulary & Real Situations', text: 'Food, shopping, directions, time, dates, and quick-response language learners can use immediately.' },
+    { range: 'Sessions 16–19', title: 'Reading & Listening Mastery', text: 'Integrated comprehension, speaking confidence, and short reading/listening drills.' },
+    { range: 'Sessions 20–22', title: 'Mock Exams & Final Evaluation', text: 'Timed simulations, targeted remediation, and a final performance review with feedback.' },
   ],
-  Japanese: [
-    { level: 'Beginner A1–A2', lessons: '26 lessons', duration: '5 weeks', accent: 'purple', detail: 'Hiragana, phrases, and confidence' },
-    { level: 'Intermediate B1–B2', lessons: '35 lessons', duration: '7 weeks', accent: 'cyan', detail: 'Natural speech patterns and nuance' },
-    { level: 'Advanced C1', lessons: '22 lessons', duration: '5 weeks', accent: 'mint', detail: 'Presentation polish and cultural fluency' },
-  ],
-  German: [
-    { level: 'Beginner A1–A2', lessons: '23 lessons', duration: '4 weeks', accent: 'purple', detail: 'Core words and sentence building' },
-    { level: 'Intermediate B1–B2', lessons: '29 lessons', duration: '6 weeks', accent: 'cyan', detail: 'Grammar with practical speaking' },
-    { level: 'Advanced C1', lessons: '19 lessons', duration: '4 weeks', accent: 'mint', detail: 'Professional and academic confidence' },
-  ],
-  Mandarin: [
-    { level: 'Beginner A1–A2', lessons: '28 lessons', duration: '5 weeks', accent: 'purple', detail: 'Pinyin, tones, and everyday phrases' },
-    { level: 'Intermediate B1–B2', lessons: '33 lessons', duration: '6 weeks', accent: 'cyan', detail: 'Fluid conversations and listening practice' },
-    { level: 'Advanced C1', lessons: '21 lessons', duration: '5 weeks', accent: 'mint', detail: 'Complex discussion and presentation skills' },
-  ],
-  English: [
-    { level: 'Beginner A1–A2', lessons: '18 lessons', duration: '3 weeks', accent: 'purple', detail: 'Conversation, grammar, and confidence' },
-    { level: 'Intermediate B1–B2', lessons: '25 lessons', duration: '5 weeks', accent: 'cyan', detail: 'Business communication and speaking fluency' },
-    { level: 'Advanced C1', lessons: '17 lessons', duration: '4 weeks', accent: 'mint', detail: 'High-impact writing and public speaking' },
+  'JLPT N5': [
+    { range: 'Sessions 1–5', title: 'Foundations', text: 'Romaji/Hiragana basics, pronunciation, core vocabulary, and sound recognition.' },
+    { range: 'Sessions 6–11', title: 'Core Grammar & Structure', text: 'Particles, sentence patterns, essential verbs, and everyday expression building.' },
+    { range: 'Sessions 12–15', title: 'Integrated Daily Use', text: 'Food, travel, directions, dates, and practical vocabulary checkpoints.' },
+    { range: 'Sessions 16–19', title: 'Listening & Reading Practice', text: 'Build comprehension with guided drills and discussion-based practice.' },
+    { range: 'Sessions 20–22', title: 'Mock Examinations', text: 'Full-length practice, remediation, and final assessment simulation.' },
   ],
 }
 
-const steps = [
-  'Choose your target language and starting level based on how you want to speak, write, and learn.',
-  'Practice for 10 minutes a day with micro lessons that mix listening, speaking, reading, and writing.',
-  'Track real-world fluency growth through timed quizzes, speech reviews, and milestone badges.',
+const outcomes = [
+  'Diagnostic baseline to establish learner starting level.',
+  'Ongoing tracking against skill mastery targets (80%+ in vocab/grammar).',
+  'Mock examinations before official evaluation and final review.',
+  'Official Certificate of Completion issued by I Learn.',
 ]
 
-const testimonials = [
-  { name: 'Maya R.', role: 'Spanish • reached B1 in 3 months', quote: 'The pronunciation coach made me feel confident speaking on day one. I finally stopped avoiding real conversations.', score: '4.9/5' },
-  { name: 'Ethan K.', role: 'French • daily streak 120 days', quote: 'The lessons feel bite-sized but powerful. I keep learning even on busy weeks because the structure is so clear.', score: '4.8/5' },
-  { name: 'Nadia L.', role: 'Japanese • advanced track', quote: 'The AI feedback catches tiny pronunciation issues instantly, and the cultural prompts make the language feel alive.', score: '5.0/5' },
+const requirements = [
+  'Active email address for coordination and contract processing',
+  'Viber or WhatsApp account for student updates and scheduling',
+  'Proof of payment receipt to lock in batch slots',
 ]
 
-const pricingPlans = [
-  { name: 'Free', price: '$0', description: 'Core daily practice and vocabulary decks.', perks: ['Daily drills', '3 beginner modules', 'Basic streak tracking'], featured: false },
-  { name: 'Pro', price: '$19', description: 'Unlimited AI practice and personalized coaching.', perks: ['Everything in Free', 'AI speech scoring', 'Unlimited lesson access', 'Offline practice mode'], featured: true },
-  { name: 'Teams', price: '$39', description: 'Built for study groups and shared progress.', perks: ['Multi-user tracking', 'Group leaderboard', 'Shared vocabulary sets', 'Team progress dashboard'], featured: false },
+const featuredHighlights = [
+  {
+    title: 'TOP 2 - PROFESSIONAL LANGUAGE PROFICIENCY LICENSURE EXAMINATION (JANUARY 2026)',
+    rating: 'OVERALL RATING: 100%',
+    image: '/PREV1.JPG',
+    link: 'https://www.facebook.com/permalink.php?story_fbid=pfbid02LZDszouLZBdyJRAUnXrDM8MGZXmRTiiwWY14xLqEPU3ABidoNcdyZ88Ycg77EEM4l&id=61593960765889',
+  },
+  {
+    title: 'English Night Class 09-14-2026',
+    rating: 'Featured class showcase',
+    image: '/PREV2.png',
+    link: 'https://www.facebook.com/permalink.php?story_fbid=pfbid02pkRejMYq2rBXRKh3CS16bwimuyr325M1G9FeWSfXgUyR7rMknc8suAxhEZTxst7wl&id=61593960765889',
+  },
 ]
 
-const practiceData = {
-  Spanish: {
-    prompt: '¿Puedes repetir la frase más natural para invitar a un amigo a cenar?',
-    options: ['¿Te gustaría cenar conmigo esta noche?', '¿Cómo está tu cena de noche?', '¿Comes conmigo esta noche?', '¿Tú vienes a cena?'],
-    correct: '¿Te gustaría cenar conmigo esta noche?',
-    tip: 'Natural invitations often use “te gustaría” when sounding polite and conversational.',
+const studyModes = [
+  {
+    title: 'A. Online Class',
+    description: 'The students may make their time productive by studying at home or in any place where they are comfortable. This is perfect for those who want to learn new knowledge while avoiding going outside.',
   },
-  French: {
-    prompt: 'Choisissez la réponse la plus naturelle pour proposer un café.',
-    options: ['Tu veux prendre un café ?', 'Tu as un café ?', 'Café toi aujourd’hui ?', 'Prends café ?'],
-    correct: 'Tu veux prendre un café ?',
-    tip: 'This phrase sounds natural and conversational in everyday French.',
+  {
+    title: 'B. Face to Face Class (in the office)',
+    description: 'The student may already enroll to get the ₱3,000 discount and to reserve a slot. Most of the time, the slots are full. You may attend the onsite class once it is already available in your preferred branch.',
   },
-  Japanese: {
-    prompt: 'Choose the most natural way to suggest meeting up after class.',
-    options: ['授業後、カフェに行きませんか？', '授業後にカフェ？', '授業後、カフェに行く？', '授業後、カフェですか？'],
-    correct: '授業後、カフェに行きませんか？',
-    tip: 'This phrase is natural, polite, and commonly used in invitation contexts.',
+  {
+    title: 'C. Combined Class (Online and Onsite)',
+    description: 'The student may do the Online Class in the meantime. Once the Onsite Class is already available in your preferred branch, the person may already continue the class in the office.',
   },
-  German: {
-    prompt: 'Welche Antwort klingt am natürlichsten, um jemanden zum Abendessen einzuladen?',
-    options: ['Möchtest du heute Abend mit mir essen?', 'Essen du heute mit mir?', 'Willst du Abend essen?', 'Du kommst heute Abend Essen?'],
-    correct: 'Möchtest du heute Abend mit mir essen?',
-    tip: 'A polite invitation usually uses “möchtest du…” for a natural tone.',
-  },
-}
+]
+
+const ieltsInclusions = [
+  'The ONLY ACCREDITED IELTS Center that offers no expiration on the IELTS Review. With a lifetime warranty.',
+  'FREE IELTS Materials',
+  'Unlimited lectures (Online and Onsite) on the entire IELTS structure such as Listening, Reading, Writing, Speaking, Vocabulary Enhancement, Pronunciation, Filipinism, Accent Development and all aspects of the entire IELTS course.',
+  'Unlimited 1 on 1 Coaching every day.',
+  'Unlimited Online lectures and 1 on 1 coaching sessions.',
+  'Unlimited Onsite lectures and 1 on 1 coaching sessions.',
+  'Unlimited Mock Tests',
+  'Unlimited Practice Tests',
+  'Unlimited Handouts',
+  'FREE Grand Coaching',
+  'FREE Ultimate Coaching',
+  'FREE Writing and Speaking workshop sponsored by IELTS Experts.',
+  'FREE IELTS Pretest',
+  'FREE Grand Mock',
+  'FREE Ultimate Mock',
+  'FREE IELTS Test Registration.',
+  'Guaranteed IELTS Test slot on ILTC Exclusive IELTS Tests.',
+]
 
 const scrollToSection = (id) => {
   document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
 }
 
 function App() {
-  const [activeLanguage, setActiveLanguage] = useState('Spanish')
-  const [activeTab, setActiveTab] = useState('Spanish')
-  const [flipped, setFlipped] = useState(false)
-  const [selectedAnswer, setSelectedAnswer] = useState(null)
-  const [showResult, setShowResult] = useState(false)
+  const [activeCurriculum, setActiveCurriculum] = useState('French')
+  const [submitted, setSubmitted] = useState(false)
+  const [formData, setFormData] = useState({
+    fullName: '',
+    email: '',
+    phone: '',
+    language: 'Japanese',
+    mode: 'VIP Online Class',
+  })
 
-  const activeCourseSet = courseCatalog[activeTab]
-  const practice = practiceData[activeLanguage]
-  const isAnswerCorrect = selectedAnswer === practice.correct
+  const handleSubmit = (event) => {
+    event.preventDefault()
+    setSubmitted(true)
+  }
 
-  const handleLanguagePick = (language) => {
-    setActiveTab(language)
-    setActiveLanguage(language)
-    setSelectedAnswer(null)
-    setShowResult(false)
+  const handleChange = (event) => {
+    const { name, value } = event.target
+    setFormData((current) => ({ ...current, [name]: value }))
   }
 
   return (
-    <div className="lingua-shell">
+    <div className="app-shell">
       <header className="topbar">
         <div className="container nav-wrap">
           <button className="brand" type="button" onClick={() => scrollToSection('home')} aria-label="Go to home section">
-            <img src="/logo.jpg" alt="Lingu-A logo" className="brand-logo" />
-            <span className="brand-name">Lingu-A</span>
+            <img src="/logo.jpg" alt="I Learn Language Tutorial Center logo" className="brand-logo" />
+            <span className="brand-name">I Learn Language Tutorial Center</span>
           </button>
 
           <nav className="main-nav" aria-label="Main navigation">
             {navItems.map((item) => (
-              <button
-                key={item.id}
-                type="button"
-                className="nav-link"
-                onClick={() => scrollToSection(item.id)}
-              >
+              <button key={item.id} type="button" className="nav-link" onClick={() => scrollToSection(item.id)}>
                 {item.label}
               </button>
             ))}
           </nav>
 
-          <div className="nav-actions">
-            <label className="lang-select" aria-label="Select language">
-              <Languages size={16} />
-              <select value={activeLanguage} onChange={(event) => handleLanguagePick(event.target.value)}>
-                {courseTabs.map((language) => (
-                  <option key={language} value={language}>{language}</option>
-                ))}
-              </select>
-            </label>
-            <button type="button" className="btn btn-ghost">Log In</button>
-            <button type="button" className="btn btn-primary pulse" onClick={() => scrollToSection('pricing')}>
-              Start Learning Free
-            </button>
-          </div>
+          <button type="button" className="btn btn-primary" onClick={() => scrollToSection('contact')}>
+            Enroll Now / Inquire
+          </button>
         </div>
       </header>
 
@@ -197,33 +220,33 @@ function App() {
           <div className="container hero-grid">
             <motion.div
               className="hero-copy"
-              initial={{ opacity: 0, y: 28 }}
+              initial={{ opacity: 0, y: 18 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
+              transition={{ duration: 0.5 }}
             >
-              <span className="eyebrow">AI-powered language learning</span>
-              <h1>Master Any Language Through Context & Real-World Practice</h1>
+              <span className="eyebrow">Multilingual Language Educator & Training Center</span>
+              <h1>Master Foreign Languages with Practical, Structured Pathways</h1>
               <p className="subtitle">
-                Interactive, bite-sized lessons designed to help you reach conversational fluency faster with AI-guided feedback and immersive practice.
+                From foundational speech to professional fluency in Japanese (JLPT N5–N3), French (A1–B2), Mandarin, Cantonese, Spanish, Thai, and Portuguese.
               </p>
 
               <div className="hero-actions">
-                <button type="button" className="btn btn-primary pulse" onClick={() => scrollToSection('pricing')}>
-                  Get Started Free <ArrowRight size={18} />
+                <button type="button" className="btn btn-primary" onClick={() => scrollToSection('languages')}>
+                  Explore Courses <ArrowRight size={18} />
                 </button>
-                <button type="button" className="btn btn-secondary" onClick={() => scrollToSection('courses')}>
-                  Explore Courses
+                <button type="button" className="btn btn-promote" onClick={() => scrollToSection('pricing')}>
+                  Claim Promo Rate
                 </button>
               </div>
 
-              <div className="proof-strip">
-                <div className="proof-pill">
+              <div className="trust-row">
+                <div className="mini-card">
                   <Star size={16} fill="currentColor" />
-                  4.9/5 rating from 10,000+ learners
+                  4.9/5 Learning Experience
                 </div>
-                <div className="proof-pill subtle">
+                <div className="mini-card muted">
                   <ShieldCheck size={16} />
-                  Beginner to advanced pathways
+                  Fast-track results
                 </div>
               </div>
             </motion.div>
@@ -232,131 +255,145 @@ function App() {
               className="hero-panel"
               initial={{ opacity: 0, scale: 0.96 }}
               animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.7, delay: 0.1 }}
+              transition={{ duration: 0.6, delay: 0.1 }}
             >
-              <div className="preview-card">
-                <div className="floating-badge">
+              <div className="hero-visual surface-card">
+                <div className="visual-badge">
                   <Sparkles size={14} />
-                  Daily streak: 18 days
+                  September Batch Promo
                 </div>
 
-                <div className={`flashcard ${flipped ? 'is-flipped' : ''}`} onClick={() => setFlipped((state) => !state)}>
-                  <div className="flashcard-face flashcard-front">
-                    <span className="label">Vocabulary boost</span>
-                    <h3>{activeLanguage === 'Japanese' ? 'おはようございます' : activeLanguage === 'French' ? 'Bonjour, comment ça va ?' : activeLanguage === 'German' ? 'Guten Morgen!' : activeLanguage === 'Mandarin' ? '你好，你好吗？' : 'Good morning! How are you?'}</h3>
-                    <p>{activeLanguage === 'Japanese' ? 'Good morning — a polite greeting in daily life.' : 'Common phrase to greet someone naturally and warmly.'}</p>
-                    <button type="button" className="mini-btn">
-                      <Play size={14} />
-                      Listen
-                    </button>
+                <div className="visual-metric">
+                  <div>
+                    <span>22-Session Program</span>
+                    <strong>99 contact hours</strong>
                   </div>
-
-                  <div className="flashcard-face flashcard-back">
-                    <span className="label">Translation</span>
-                    <h3>{activeLanguage === 'Japanese' ? 'おはようございます' : activeLanguage === 'French' ? 'Bonjour, comment ça va ?' : activeLanguage === 'German' ? 'Guten Morgen!' : activeLanguage === 'Mandarin' ? '你好，你好吗？' : 'Good morning! How are you?'}</h3>
-                    <p>Usual phrase for greetings in friendly, everyday situations.</p>
-                  </div>
+                  <div className="mini-pill">Limited time</div>
                 </div>
 
-                <div className="speaker-row">
-                  <div className="sound-bars" aria-label="Speech visualization">
-                    {[...Array(8)].map((_, index) => (
-                      <span key={index} style={{ height: `${18 + (index % 5) * 9}px` }} />
-                    ))}
-                  </div>
-                  <button type="button" className="chip chip-active">
-                    <AudioLines size={14} />
-                    Pronunciation check
-                  </button>
+                <div className="visual-list">
+                  <div className="list-item"><Check size={16} /> Vocabulary & grammar mastery</div>
+                  <div className="list-item"><Check size={16} /> Reading, listening & speaking</div>
+                  <div className="list-item"><Check size={16} /> Mock exams & final evaluation</div>
                 </div>
 
-                <div className="progress-card">
-                  <div className="progress-head">
-                    <span>Fluency progress</span>
-                    <strong>82%</strong>
+                <div className="visual-footer">
+                  <div>
+                    <small>Active promo rate</small>
+                    <strong>₱40,000</strong>
                   </div>
-                  <div className="progress-track">
-                    <span style={{ width: '82%' }} />
-                  </div>
-                  <div className="progress-meta">
-                    <span>+14% this month</span>
-                    <span>Next milestone: B1</span>
-                  </div>
+                  <button type="button" className="btn btn-primary small" onClick={() => scrollToSection('pricing')}>View package</button>
                 </div>
               </div>
             </motion.div>
           </div>
         </section>
 
-        <section id="features" className="section-block">
+        <section className="section-block featured-section">
           <div className="container">
             <div className="section-heading">
-              <span className="eyebrow">Why learners stay</span>
-              <h2>Everything you need to build real confidence.</h2>
+              <span className="eyebrow">Featured highlights</span>
+              <h2>Recent class wins and public recognition.</h2>
             </div>
 
-            <div className="feature-grid">
-              {featureCards.map(({ icon: Icon, title, description }, index) => (
+            <div className="featured-grid">
+              {featuredHighlights.map((feature) => (
+                <a
+                  key={feature.title}
+                  href={feature.link}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="landscape-card glow-card featured-link"
+                >
+                  <div
+                    className="featured-preview-image"
+                    style={{
+                      backgroundImage: feature.image
+                        ? `url(${feature.image})`
+                        : 'linear-gradient(135deg, rgba(96, 165, 250, 0.82), rgba(15, 23, 42, 0.96), rgba(190, 18, 60, 0.72))',
+                    }}
+                  >
+                    <span className="feature-card-tag">Featured photo</span>
+                  </div>
+                  <div className="featured-preview-body">
+                    <h3>{feature.title}</h3>
+                    <p>{feature.rating}</p>
+                  </div>
+                  <div className="featured-preview-footer">
+                    <span>Open Facebook post</span>
+                  </div>
+                </a>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section id="languages" className="section-block">
+          <div className="container">
+            <div className="section-heading">
+              <span className="eyebrow">Offered languages</span>
+              <h2>Learning tracks designed for real progress.</h2>
+            </div>
+
+            <div className="language-grid landscape-layout">
+              {languageCards.map((language, index) => (
                 <motion.article
-                  key={title}
-                  className="feature-card surface-card"
-                  initial={{ opacity: 0, y: 18 }}
+                  key={language.name}
+                  className="surface-card language-card"
+                  initial={{ opacity: 0, y: 16 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, amount: 0.2 }}
-                  transition={{ delay: index * 0.08, duration: 0.4 }}
+                  transition={{ duration: 0.35, delay: index * 0.06 }}
                 >
-                  <div className="feature-icon">
-                    <Icon size={20} />
+                  <div className="language-topline">
+                    <span className="language-badge">{language.name}</span>
+                    <Languages size={18} />
                   </div>
-                  <h3>{title}</h3>
-                  <p>{description}</p>
+                  <h3>{language.tag}</h3>
+                  <p>{language.description}</p>
                 </motion.article>
               ))}
             </div>
           </div>
         </section>
 
-        <section id="courses" className="section-block">
+        <section id="pricing" className="section-block price-section">
           <div className="container">
             <div className="section-heading">
-              <span className="eyebrow">Course catalog</span>
-              <h2>Choose the path that fits your goals.</h2>
+              <span className="eyebrow">Course tiers & pricing</span>
+              <h2>Choose the format that fits your goals.</h2>
             </div>
 
-            <div className="course-tabs" aria-label="Course languages">
-              {courseTabs.map((language) => (
-                <button
-                  key={language}
-                  type="button"
-                  className={activeTab === language ? 'course-tab active' : 'course-tab'}
-                  onClick={() => handleLanguagePick(language)}
-                >
-                  {language}
-                </button>
-              ))}
-            </div>
-
-            <div className="catalog-grid">
-              {activeCourseSet.map((course, index) => (
+            <div className="pricing-grid">
+              {pricingCards.map((plan, index) => (
                 <motion.article
-                  key={course.level}
-                  className={`catalog-card ${course.accent}`}
+                  key={plan.title}
+                  className={plan.featured ? 'pricing-card featured' : 'pricing-card'}
                   initial={{ opacity: 0, y: 18 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, amount: 0.2 }}
-                  transition={{ delay: index * 0.08, duration: 0.4 }}
+                  transition={{ duration: 0.35, delay: index * 0.08 }}
                 >
-                  <div className="catalog-topline">
-                    <span className="catalog-pill">{course.level}</span>
-                    <span className="catalog-lesson">{course.lessons}</span>
+                  <div className="pricing-header">
+                    <span className="plan-name">{plan.title}</span>
+                    {plan.badge ? <span className="plan-badge">{plan.badge}</span> : null}
                   </div>
-                  <h3>{course.detail}</h3>
-                  <div className="catalog-meta">
-                    <span><Clock3 size={14} /> {course.duration}</span>
-                    <span><Zap size={14} /> AI-guided</span>
+
+                  <div className="price-wrap">
+                    <strong>{plan.price}</strong>
+                    {plan.promo ? <span className="promo-line">{plan.promo}</span> : null}
                   </div>
-                  <button type="button" className="catalog-btn">
-                    View path <ChevronRight size={16} />
+
+                  <p>{plan.detail}</p>
+
+                  <ul className="perk-list">
+                    <li><Check size={16} /> Personalized learning roadmap</li>
+                    <li><Check size={16} /> Structured progress checks</li>
+                    <li><Check size={16} /> Instructor-guided support</li>
+                  </ul>
+
+                  <button type="button" className={plan.featured ? 'btn btn-primary' : 'btn btn-secondary'}>
+                    {plan.featured ? 'Reserve your slot' : 'Inquire now'}
                   </button>
                 </motion.article>
               ))}
@@ -364,179 +401,184 @@ function App() {
           </div>
         </section>
 
-        <section id="how-it-works" className="section-block">
+        <section id="curriculum" className="section-block curriculum-section">
           <div className="container">
             <div className="section-heading">
-              <span className="eyebrow">How it works</span>
-              <h2>From day one to real fluency.</h2>
+              <span className="eyebrow">Curriculum guide</span>
+              <h2>What students complete inside the 22-session pathway.</h2>
             </div>
 
-            <div className="steps-row">
-              {steps.map((step, index) => (
+            <div className="curriculum-shell surface-card">
+              <div className="curriculum-tabs" aria-label="Curriculum tabs">
+                {Object.keys(curriculumSets).map((key) => (
+                  <button
+                    key={key}
+                    type="button"
+                    className={activeCurriculum === key ? 'curriculum-tab active' : 'curriculum-tab'}
+                    onClick={() => setActiveCurriculum(key)}
+                  >
+                    {key}
+                  </button>
+                ))}
+              </div>
+
+              <div className="curriculum-panels">
+                {curriculumSets[activeCurriculum].map((module) => (
+                  <div key={module.range} className="curriculum-row">
+                    <div className="module-range">{module.range}</div>
+                    <div className="module-detail">
+                      <h3>{module.title}</h3>
+                      <p>{module.text}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="outcomes" className="section-block outcomes-section">
+          <div className="container outcomes-grid">
+            <div className="outcomes-copy">
+              <span className="eyebrow">Student outcomes</span>
+              <h2>A structured four-step growth system.</h2>
+            </div>
+
+            <div className="outcomes-flow">
+              {outcomes.map((item, index) => (
                 <motion.div
-                  key={step}
-                  className="step-card surface-card"
+                  key={item}
+                  className="outcome-card surface-card"
                   initial={{ opacity: 0, y: 18 }}
                   whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, amount: 0.3 }}
-                  transition={{ delay: index * 0.08, duration: 0.4 }}
+                  viewport={{ once: true, amount: 0.2 }}
+                  transition={{ duration: 0.35, delay: index * 0.06 }}
                 >
-                  <div className="step-number">0{index + 1}</div>
-                  <p>{step}</p>
+                  <div className="outcome-number">0{index + 1}</div>
+                  <p>{item}</p>
                 </motion.div>
               ))}
             </div>
           </div>
         </section>
 
-        <section id="dashboard" className="section-block dash-section">
-          <div className="container dash-shell">
-            <div className="dash-copy">
-              <span className="eyebrow">Practice dashboard</span>
-              <h2>Learn in short bursts. Track progress in real time.</h2>
-              <p>
-                Build speaking confidence with guided exercises, instant feedback, and adaptive recommendations based on your real performance.
-              </p>
+        <section className="section-block study-section">
+          <div className="container">
+            <div className="section-heading">
+              <span className="eyebrow">Study options</span>
+              <h2>Several ways to study and review with ILTC.</h2>
+            </div>
 
-              <div className="mini-metrics">
-                <div>
-                  <strong>14 min</strong>
-                  <span>Average daily session</span>
+            <div className="study-layout">
+              <div className="study-modes">
+                {studyModes.map((mode) => (
+                  <div key={mode.title} className="study-mode glass-card glow-card">
+                    <h3>{mode.title}</h3>
+                    <p>{mode.description}</p>
+                  </div>
+                ))}
+              </div>
+
+              <div className="ielts-card glass-card glow-card">
+                <h3>I Learn-Language Tutorial Center IELTS Inclusions</h3>
+                <ul>
+                  {ieltsInclusions.map((item) => (
+                    <li key={item}><Check size={15} /> {item}</li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section className="section-block enrollment-section">
+          <div className="container requirements-grid">
+            <div className="requirement-panel surface-card">
+              <span className="eyebrow">Enrollment requirements</span>
+              <h3>Student portal & onboarding essentials</h3>
+              <ul className="mini-list">
+                {requirements.map((item) => (
+                  <li key={item}><Check size={16} /> {item}</li>
+                ))}
+              </ul>
+            </div>
+
+            <div className="requirement-panel surface-card accent-panel">
+              <span className="eyebrow">Enrollment flow</span>
+              <h3>How to reserve your slot</h3>
+              <div className="step-stack">
+                <div><strong>1.</strong> Submit the inquiry form below.</div>
+                <div><strong>2.</strong> Confirm your target language and preferred class mode.</div>
+                <div><strong>3.</strong> Send proof of payment to lock in the batch placement.</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="contact" className="section-block contact-section">
+          <div className="container contact-shell surface-card">
+            <div className="contact-copy">
+              <span className="eyebrow">Contact & inquiry</span>
+              <h2>Inquire & reserve your slot.</h2>
+              <p>Share your target language and preferred class format and the team will guide you with the next step.</p>
+
+              <div className="contact-items">
+                <a href="mailto:ilearnlanguagetutorialcenter@gmail.com"><Mail size={18} /> ilearnlanguagetutorialcenter@gmail.com</a>
+                <a href="tel:+639611244639"><Phone size={18} /> +63 961 124 4639</a>
+                <a href="https://wa.me/639611244639" target="_blank" rel="noreferrer"><MessageSquareText size={18} /> WhatsApp / Viber coordination</a>
+                <div className="contact-highlight">
+                  <strong>Facebook Page:</strong> I Learn-Language Learning School
                 </div>
-                <div>
-                  <strong>6x</strong>
-                  <span>Faster recall</span>
+                <div className="contact-highlight">
+                  <strong>Branches:</strong> Quezon City, Makati City, Alabang, Calamba City, Dasmariñas City, Lipa City
                 </div>
-                <div>
-                  <strong>92%</strong>
-                  <span>Retention score</span>
+                <div className="contact-highlight">
+                  <strong>WhatsApp:</strong> ILTC Philippines • 0961-124-4639
                 </div>
               </div>
             </div>
 
-            <div className="exercise-panel surface-card">
-              <div className="exercise-topbar">
-                <div>
-                  <span className="tiny-label">Current challenge</span>
-                  <h3>{activeLanguage} conversation lab</h3>
-                </div>
-                <button type="button" className="chip chip-light">
-                  <Globe2 size={14} />
-                  Live practice
-                </button>
+            <form className="lead-form" onSubmit={handleSubmit}>
+              <div className="field-grid">
+                <label>
+                  Full Name
+                  <input type="text" name="fullName" value={formData.fullName} onChange={handleChange} required />
+                </label>
+                <label>
+                  Email Address
+                  <input type="email" name="email" value={formData.email} onChange={handleChange} required />
+                </label>
+                <label>
+                  Phone / Viber Number
+                  <input type="tel" name="phone" value={formData.phone} onChange={handleChange} required />
+                </label>
+                <label>
+                  Target Language
+                  <select name="language" value={formData.language} onChange={handleChange}>
+                    <option>Japanese</option>
+                    <option>French</option>
+                    <option>Mandarin</option>
+                    <option>Cantonese</option>
+                    <option>Spanish</option>
+                    <option>Portuguese</option>
+                    <option>Thai</option>
+                  </select>
+                </label>
+                <label className="wide">
+                  Preferred Class Mode
+                  <select name="mode" value={formData.mode} onChange={handleChange}>
+                    <option>VIP Online Class</option>
+                    <option>Home Base - Group Class</option>
+                  </select>
+                </label>
               </div>
 
-              <div className="exercise-prompt">
-                <p>{practice.prompt}</p>
-              </div>
+              <button type="submit" className="btn btn-primary submit-btn">Inquire & Reserve Slot</button>
 
-              <div className="option-list">
-                {practice.options.map((option) => {
-                  const isSelected = selectedAnswer === option
-                  const isCorrect = option === practice.correct
-                  const className = showResult
-                    ? isCorrect
-                      ? 'answer answer-correct'
-                      : isSelected
-                        ? 'answer answer-wrong'
-                        : 'answer'
-                    : isSelected
-                      ? 'answer answer-selected'
-                      : 'answer'
-
-                  return (
-                    <button
-                      key={option}
-                      type="button"
-                      className={className}
-                      onClick={() => {
-                        setSelectedAnswer(option)
-                        setShowResult(true)
-                      }}
-                    >
-                      {isCorrect && showResult ? <Check size={16} /> : null}
-                      {option}
-                    </button>
-                  )
-                })}
-              </div>
-
-              {showResult && (
-                <div className={isAnswerCorrect ? 'feedback success' : 'feedback error'}>
-                  {isAnswerCorrect ? 'Correct — excellent choice!' : `Not quite — ${practice.tip}`}
-                </div>
+              {submitted && (
+                <p className="success-message">Thank you! Your inquiry has been recorded and I Learn Language Tutorial Center will contact you shortly.</p>
               )}
-
-              <div className="exercise-actions">
-                <button type="button" className="btn btn-primary small">
-                  <Play size={14} />
-                  Play audio
-                </button>
-                <button type="button" className="btn btn-secondary small" onClick={() => { setSelectedAnswer(null); setShowResult(false) }}>
-                  Try another
-                </button>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section className="section-block testimonials-section">
-          <div className="container">
-            <div className="section-heading">
-              <span className="eyebrow">Loved by learners</span>
-              <h2>Students are seeing real progress, fast.</h2>
-            </div>
-
-            <div className="testimonial-grid">
-              {testimonials.map((item) => (
-                <article key={item.name} className="surface-card testimonial-card">
-                  <div className="rating-row">
-                    {[...Array(5)].map((_, index) => (
-                      <Star key={index} size={16} fill="currentColor" />
-                    ))}
-                    <span>{item.score}</span>
-                  </div>
-                  <p className="quote">“{item.quote}”</p>
-                  <div className="user-meta">
-                    <strong>{item.name}</strong>
-                    <span>{item.role}</span>
-                  </div>
-                </article>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        <section id="pricing" className="section-block pricing-section">
-          <div className="container">
-            <div className="section-heading">
-              <span className="eyebrow">Flexible plans</span>
-              <h2>Pick the plan that fits your learning rhythm.</h2>
-            </div>
-
-            <div className="pricing-grid">
-              {pricingPlans.map((plan) => (
-                <article key={plan.name} className={plan.featured ? 'pricing-card featured' : 'pricing-card'}>
-                  <div className="pricing-top">
-                    <span className="pricing-name">{plan.name}</span>
-                    {plan.featured ? <span className="featured-tag">Most popular</span> : null}
-                  </div>
-                  <div className="price-row">
-                    <strong>{plan.price}</strong>
-                    <span>/ month</span>
-                  </div>
-                  <p>{plan.description}</p>
-                  <ul>
-                    {plan.perks.map((perk) => (
-                      <li key={perk}><Check size={14} /> {perk}</li>
-                    ))}
-                  </ul>
-                  <button type="button" className={plan.featured ? 'btn btn-primary' : 'btn btn-secondary'}>
-                    {plan.featured ? 'Start free trial' : 'Choose plan'}
-                  </button>
-                </article>
-              ))}
-            </div>
+            </form>
           </div>
         </section>
       </main>
@@ -545,29 +587,29 @@ function App() {
         <div className="container footer-grid">
           <div>
             <div className="brand brand-footer">
-              <img src="/logo.jpg" alt="Lingu-A logo" className="brand-logo" />
-              <span className="brand-name">Lingu-A</span>
+              <img src="/logo.jpg" alt="I Learn Language Tutorial Center logo" className="brand-logo" />
+              <span className="brand-name">I Learn</span>
             </div>
-            <p className="footer-copy">Bite-sized language learning for everyday confidence.</p>
+            <p className="footer-copy">Structured multilingual training for confident communication, exam preparation, and real-world fluency.</p>
           </div>
 
           <div className="footer-links">
-            <h4>Company</h4>
-            <a href="#features">Features</a>
-            <a href="#courses">Courses</a>
+            <h4>Explore</h4>
+            <a href="#languages">Offered Languages</a>
             <a href="#pricing">Pricing</a>
+            <a href="#curriculum">Curriculum</a>
           </div>
 
           <div className="footer-links">
-            <h4>Legal</h4>
-            <a href="#">Privacy Policy</a>
-            <a href="#">Terms of Service</a>
-            <a href="#">Language settings</a>
+            <h4>Contact</h4>
+            <a href="mailto:ilearnlanguagetutorialcenter@gmail.com">Email</a>
+            <a href="tel:+639611244639">Phone</a>
+            <a href="https://wa.me/639611244639" target="_blank" rel="noreferrer">WhatsApp</a>
           </div>
         </div>
 
         <div className="container footer-bottom">
-          <span>© 2026 Lingu-A. All rights reserved.</span>
+          <span>© 2026 I Learn Language Tutorial Center. All rights reserved.</span>
         </div>
       </footer>
     </div>
