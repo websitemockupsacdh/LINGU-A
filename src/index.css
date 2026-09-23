@@ -63,12 +63,12 @@ a:focus-visible {
   outline: 2px solid rgba(167, 188, 255, 0.9);
   outline-offset: 2px;
 }
+
+/* Updated Featured Preview CSS */
 .featured-preview-image {
   position: relative;
-  display: flex;
-  align-items: flex-start;
-  justify-content: flex-start;
-  min-height: 210px;
+  display: block; /* Pinalitan mula flex para maiwasan ang collapse */
+  min-height: 250px;
   width: 100%;
   border-radius: 18px;
   background-size: cover;
